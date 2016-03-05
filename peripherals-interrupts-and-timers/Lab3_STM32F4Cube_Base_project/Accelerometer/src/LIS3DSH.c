@@ -366,7 +366,7 @@ void LIS3DSH_ReadACC(float* out)
       for(i=0; i<0x06; i=i+2)
       {
 				aggregateResult = (int32_t)(buffer[i] | buffer[i+1] << 8);
-        *out =(float)(LIS3DSH_SENSITIVITY_2G * (float)aggregateResult);
+        *out =(float)((float)LIS3DSH_SENSITIVITY_2G * (float)aggregateResult);
         out++;
       }
       break;
@@ -376,7 +376,7 @@ void LIS3DSH_ReadACC(float* out)
       for(i=0; i<0x06; i=i+2)
       {
 				aggregateResult = (int32_t)(buffer[i] | buffer[i+1] << 8);
-        *out =(float)(LIS3DSH_SENSITIVITY_4G * (float)aggregateResult);
+        *out =(float)((float)LIS3DSH_SENSITIVITY_4G * (float)aggregateResult);
         out++;
       }
       break;
@@ -386,7 +386,7 @@ void LIS3DSH_ReadACC(float* out)
       for(i=0; i<0x06; i=i+2)
       {
 				aggregateResult = (int32_t)(buffer[i] | buffer[i+1] << 8);
-        *out =(float)(LIS3DSH_SENSITIVITY_6G * (float)aggregateResult);
+        *out =(float)((float)LIS3DSH_SENSITIVITY_6G * (float)aggregateResult);
         out++;
       }
       break;
@@ -396,7 +396,7 @@ void LIS3DSH_ReadACC(float* out)
       for(i=0; i<0x06; i=i+2)
       {
 				aggregateResult = (int32_t)(buffer[i] | buffer[i+1] << 8);
-        *out =(float)(LIS3DSH_SENSITIVITY_8G * (float)aggregateResult);
+        *out =(float)((float)LIS3DSH_SENSITIVITY_8G * (float)aggregateResult);
         out++;
       }
       break;
@@ -406,7 +406,7 @@ void LIS3DSH_ReadACC(float* out)
       for(i=0; i<0x06; i=i+2)
       {
 				aggregateResult = (int32_t)(buffer[i] | buffer[i+1] << 8);
-        *out =(float)(LIS3DSH_SENSITIVITY_16G * (float)aggregateResult);
+        *out =(float)((float)LIS3DSH_SENSITIVITY_16G * (float)aggregateResult);
         out++;
       }
       break;
