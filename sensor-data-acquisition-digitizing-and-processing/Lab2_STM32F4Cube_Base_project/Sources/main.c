@@ -70,16 +70,14 @@ int main(void){
 		HAL_ADC_Start(&ADC1_Handle);
 		if(HAL_ADC_PollForConversion(&ADC1_Handle, 1000000) == HAL_OK){
 			temp = HAL_ADC_GetValue(&ADC1_Handle);
-			// printf("%f\n", temp);
 			temp = (temp * 3000) / 4096;
 			temp = ((temp - 760) / 2.5) + 25;	
-			// printf("%f\n", temp);
 			
 			/* Pass ADC output data through Kalman filter to discard noise and apply formula found 
 			 * in the datasheel to do the necessary conversion to degree Celsius */			
 			if(!Kalmanfilter_C(temp, output, &kstate)){			
 				// printf("Raw temp= %f, Filter out temp= %f\n", temp, output[0]);
-				printf("%f\n", output[0]);
+				// printf("%f\n", output[0]);
 				sample = output[0];
 				
 				/* Extract separate digits from decimal valued ADC output(to be used for 
@@ -106,7 +104,7 @@ int main(void){
 					temp_store[2] = store[2];
 					temp_store[1] = store[1];
 					temp_store[0] = store[0];
-					// printf("%d %d %d %d\n", temp_store[3], temp_store[2], temp_store[1], temp_store[0]);
+					printf("%d %d %d %d\n", temp_store[3], temp_store[2], temp_store[1], temp_store[0]);
 				}		
 				
 				/* Start loop counter to impose delay on the LED lights designated for the overheat alarm 
@@ -142,25 +140,24 @@ int main(void){
 				 * The LED digits are displayed incrementally (swept across the segment display)
 				 * hence this loop counter allows setting reasonable amount of delay to setup
 				 * a smooth transitioning display with less recognizable flickers */
-				if(counter2 <= 1){
+				if(counter2 <= 2){
 					Display(temp_store[3], 4);
 				}
 				
-				else if(counter2 <= 2){
+				else if(counter2 <= 4){
 					Display(temp_store[2], 3);
 				}
 				
-				else if(counter2 <= 3){
-					Display(temp_store[1], 2);
+				else if(counter2 <= 6){
+					Display(temp_store[0], 1);
 				}
 				
 				else{
-					// printf("counter2 = %d\n", counter2);
-					Display(temp_store[0], 1);						
+					Display(temp_store[1], 2);						
 				}
 
 				/* Reset loop counter after 90 cycles */
-				if(counter > 90){
+				if(counter > 1000){
 					HAL_GPIO_WritePin(GPIOA, GPIO_PIN_1, GPIO_PIN_RESET);
 					HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, GPIO_PIN_RESET);
 					HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_RESET);
@@ -168,7 +165,7 @@ int main(void){
 				}
 				
 				/* Reset loop counter after 4 cycles */
-				if(counter2 >= 4){
+				if(counter2 > 6){
 					counter2 = 0;
 				}
 				
