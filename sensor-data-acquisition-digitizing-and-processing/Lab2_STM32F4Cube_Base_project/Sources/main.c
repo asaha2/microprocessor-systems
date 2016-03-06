@@ -19,6 +19,16 @@
 #include "7seg_display.h"
 
 ADC_HandleTypeDef ADC1_Handle;
+
+/* Struct declarations for ADC handle and channel configurations */
+ADC_InitTypeDef ADC1_Init;							
+ADC_ChannelConfTypeDef ADC1_Channel;
+
+/* Struct declarations for GPIO port configurations */
+GPIO_InitTypeDef GPIOA_Init;						
+GPIO_InitTypeDef GPIOE_Init;						
+GPIO_InitTypeDef GPIOD_Init;
+
 int ticks, ticks_2 = 0;
 
 int main(void){
@@ -60,8 +70,10 @@ int main(void){
 		HAL_ADC_Start(&ADC1_Handle);
 		if(HAL_ADC_PollForConversion(&ADC1_Handle, 1000000) == HAL_OK){
 			temp = HAL_ADC_GetValue(&ADC1_Handle);
+			// printf("%f\n", temp);
 			temp = (temp * 3000) / 4096;
 			temp = ((temp - 760) / 2.5) + 25;	
+			// printf("%f\n", temp);
 			
 			/* Pass ADC output data through Kalman filter to discard noise and apply formula found 
 			 * in the datasheel to do the necessary conversion to degree Celsius */			

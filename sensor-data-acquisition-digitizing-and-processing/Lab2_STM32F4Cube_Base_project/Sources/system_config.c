@@ -5,6 +5,16 @@
 #include "supporting_functions.h"
 
 extern ADC_HandleTypeDef ADC1_Handle;
+
+/* Struct declarations for ADC handle and channel configurations */
+extern ADC_InitTypeDef ADC1_Init;							
+extern ADC_ChannelConfTypeDef ADC1_Channel;
+
+/* Struct declarations for GPIO port configurations */
+extern GPIO_InitTypeDef GPIOA_Init;						
+extern GPIO_InitTypeDef GPIOE_Init;						
+extern GPIO_InitTypeDef GPIOD_Init;
+
 /**
 	 * @brief This function configures the system clock
 	 * @param void
@@ -55,11 +65,6 @@ void SystemClock_Config(void){
    */	
 void GPIO_Config(void){
 	
-	/* Struct declarations for GPIO port configurations */
-	GPIO_InitTypeDef GPIOA_Init;						
-	GPIO_InitTypeDef GPIOE_Init;						
-	GPIO_InitTypeDef GPIOD_Init;	
-	
 	/* Configure the GPIO peripheral clock */
 	__HAL_RCC_GPIOA_CLK_ENABLE();
 	__HAL_RCC_GPIOE_CLK_ENABLE();	
@@ -93,10 +98,6 @@ void GPIO_Config(void){
    * @retval void
    */
 void ADC_Config(void){
-
-	/* Struct declarations for ADC handle and channel configurations */
-	ADC_InitTypeDef ADC1_Init;							
-	ADC_ChannelConfTypeDef ADC1_Channel;	
 	
 	/* Configure the ADC peripheral clock */
 	__HAL_RCC_ADC1_CLK_ENABLE();
@@ -125,9 +126,11 @@ void ADC_Config(void){
 	
 	/* Use of supporting functions to check proper boot-up of peripherals, report on error */
 	if(HAL_ADC_Init(&ADC1_Handle) != HAL_OK){
-		printf("ADC initialization failed!\n");
+		// printf("ADC initialization failed!\n");
+		Error_Handler(ADC_INIT_FAIL);
 	}		
 	if(HAL_ADC_ConfigChannel(&ADC1_Handle, &ADC1_Channel) != HAL_OK){
-		printf("Channel configuration failed!\n");
+		// printf("Channel configuration failed!\n");
+		Error_Handler(ADC_CH_CONFIG_FAIL);
 	}
 }
