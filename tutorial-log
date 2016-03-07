@@ -1,0 +1,50 @@
+Lab-2
+- build the project to get the header files
+- each pin has width of 16 bits
+- systick is the inherent timer of arm core = 24 bit
+- use channel 16 of adc 1 for temperature digitizing
+- any structs with name 'handle' must be declared globally
+
+Lab-3
+- interrupts are subset of exceptions
+- EXT0 handler may be needed
+- for each possible interrupt there is a reserved address
+- base address+predefined interrupt address= this is why its called vector
+- nested= interrupt inside an interrupt
+- lower number= higher priority= only applies to programmable interrupts
+- atomic operationg= shouldn't be interrupted= bank transactions= disable interrupts, execute and renable
+- interrupt masking= enable/disable interrupts below certain priority
+- interrupt signal can be edge/level triggered
+- harvard architecture= concurrent fetching
+- mems sensor connected to external line 0
+- void handler-name (mentioned in the startup file) in the same file as systick source file
+- adc can generate multiple interrupts- eoc, overrun, error
+- call this predefined handler to do checking/handling/reseting
+void HAL_ADC_IRDHandler(void){
+	
+	//LOOK FOR CALLBACKS
+	HAL_ADC_ConvCpltCallback(hadc);
+}
+- group priority= 0, play with subpriority {its all about hierarchy}
+	- fix one of them and play with the other
+- priority can be static and dynamic {not applicable in this lab}
+- systick timers are reserved for rtos {don't use from now on, use peripheral timers}
+- HAL_TIM_Base_Start_IT
+- the debugger using breakpoints only stops processor, NOT THE TIMER
+	- check tutorial for solution
+- mems sensor resides on a different chipset
+	- sensor interrupt is interfaced with PE0
+	- pushbutton interfaces with PA0
+- accelerometer reports in mili-g's
+	- use embedded filters to filter out noises {use ony external stimuli}
+- disable continuous update= lock register update
+- axes enable= enable all axes for this experiment
+- filter bw= 50 {or 15? or 3?}
+- LIs3DSH_ReadACC= can be used in the interrupt routine to read x/y/z values
+- LIS3DSH_DRYInterruptConfigTypeDef= can be used to enable the mems senssor interrupt
+- gpio pin E0= configure processor settings to recognise signal the mems sensor signal as an interrupt
+	- gpio_mode_it_{rising/falling/rising_falling}
+	- enable & set priority
+	- refer to the startup file {.s}
+	- EXTI0_IRQHandler
+		- HAL_GPIO_EXTI_IRQHandler()
