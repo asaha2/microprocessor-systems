@@ -12,22 +12,37 @@
 #include "stm32f4xx_hal.h"
 #include "supporting_functions.h"
 #include "lis3dsh.h"
+#define ARM_MATH_CM4
+#include "arm_math.h"
+
 
 /* Private variables ---------------------------------------------------------*/
 
-/* Private function prototypes -----------------------------------------------*/
-void SystemClock_Config	(void);
+
+typedef struct kalman_struct{
+	double q; 		// process noise covariance
+	double r; 		// measurement noise covariance
+	double x; 		// estimated value
+	double p; 		// estimation error covariance
+	double k; 		// adaptive kalman filter gain
+}kalman_state;
 
 LIS3DSH_InitTypeDef LIS3DSH_InitStruct;
 // LIS3DSH_DRYInterruptConfigTypeDef LIS3DSH_InterruptConfigStruct;
 
+/* Private function prototypes -----------------------------------------------*/
+void SystemClock_Config	(void);
+void Reset(kalman_state* kinit);
+int Kalmanfilter_C(int InputArray, int* OutputArray, kalman_state* kstate);
+
 int main(void){	
 		
-	// uint8_t status; 
 	uint8_t out_x_l, out_x_h;
 	uint8_t out_y_l, out_y_h; 
 	uint8_t out_z_l, out_z_h;
 	int out_x, out_y, out_z;
+	int output[1] = {0};
+	kalman_state kstate;
 	
 	/* MCU Configuration----------------------------------------------------------*/
   HAL_Init();
@@ -48,6 +63,7 @@ int main(void){
 	// LIS3DSH_InterruptConfigStruct.Interrupt_type = LIS3DSH_INTERRUPT_REQUEST_PULSED;
 	
 	LIS3DSH_Init(&LIS3DSH_InitStruct);
+	Reset(&kstate);	
 
 	while (1){
 		
@@ -62,10 +78,43 @@ int main(void){
 		out_y = (out_y_h & out_y_l);
 		out_z = (out_z_h & out_z_l);
 		
-		printf("out_x_h & out_x_l = %u\n", out_x);
-		printf("out_y_h & out_y_l = %u\n", out_y);
-		printf("out_z_h & out_z_l = %u\n", out_z);
+		if(!Kalmanfilter_C(out_y, output, &kstate)){
+			printf("%u\n", output[0]);
+		}
 	}
+}
+
+int Kalmanfilter_C(int InputArray, int* OutputArray, kalman_state* kstate){
+
+	/* Update the Kalman state parameters */
+	kstate->p = kstate->p + kstate->q;
+	kstate->k = kstate->p / (kstate->p + kstate->r);
+	kstate->x = kstate->x + kstate->k * (InputArray - kstate->x);
+	kstate->p = (1 - kstate->k) * kstate->p;
+
+	OutputArray[0] = kstate->x;
+	// printf("Measured position: %f Kalman position: %f\n", InputArray, OutputArray[0]);
+
+	/* Check for NaN */
+	if(kstate->x != kstate->x){
+		return 1;
+	}
+	return 0;
+}
+
+/**
+	 * @brief This function initializes the Kalman filter struct parameters. The initial values are
+	 * decided following rigorous experiments that give the best result for our pertinent sensor
+	 * @param kinit*: Pointer to a kalman_state structure
+   * @retval void
+   */
+void Reset(kalman_state* kinit){
+
+	kinit->q = 0.1;
+	kinit->r = 0.1;
+	kinit->x = 0;
+	kinit->p = 0.1;
+	kinit->k = 0;
 }
 
 /** System Clock Configuration*/
