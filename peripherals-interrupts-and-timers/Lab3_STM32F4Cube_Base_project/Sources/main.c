@@ -18,18 +18,53 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config	(void);
 
-int main(void)
-{	
-  /* MCU Configuration----------------------------------------------------------*/
+LIS3DSH_InitTypeDef LIS3DSH_InitStruct;
+// LIS3DSH_DRYInterruptConfigTypeDef LIS3DSH_InterruptConfigStruct;
 
+int main(void){	
+		
+	// uint8_t status; 
+	uint8_t out_x_l, out_x_h;
+	uint8_t out_y_l, out_y_h; 
+	uint8_t out_z_l, out_z_h;
+	int out_x, out_y, out_z;
+	
+	/* MCU Configuration----------------------------------------------------------*/
   HAL_Init();
 
   /* Configure the system clock */
   SystemClock_Config();
 	
   /* Initialize all configured peripherals */
+	LIS3DSH_InitStruct.AA_Filter_BW = LIS3DSH_AA_BW_50;
+	LIS3DSH_InitStruct.Axes_Enable = LIS3DSH_XYZ_ENABLE;
+	LIS3DSH_InitStruct.Continous_Update = LIS3DSH_ContinousUpdate_Enabled;
+	LIS3DSH_InitStruct.Full_Scale = LIS3DSH_FULLSCALE_2;
+	LIS3DSH_InitStruct.Power_Mode_Output_DataRate = LIS3DSH_DATARATE_100;
+	LIS3DSH_InitStruct.Self_Test = LIS3DSH_SELFTEST_NORMAL;
+	
+	// LIS3DSH_InterruptConfigStruct.Dataready_Interrupt = LIS3DSH_DATA_READY_INTERRUPT_ENABLED;
+	// LIS3DSH_InterruptConfigStruct.Interrupt_signal = LIS3DSH_ACTIVE_HIGH_INTERRUPT_SIGNAL;
+	// LIS3DSH_InterruptConfigStruct.Interrupt_type = LIS3DSH_INTERRUPT_REQUEST_PULSED;
+	
+	LIS3DSH_Init(&LIS3DSH_InitStruct);
 
 	while (1){
+		
+		LIS3DSH_Read(&out_x_l, LIS3DSH_OUT_X_L, 1);
+		LIS3DSH_Read(&out_x_h, LIS3DSH_OUT_X_H, 1);
+		LIS3DSH_Read(&out_y_l, LIS3DSH_OUT_Y_L, 1);
+		LIS3DSH_Read(&out_y_h, LIS3DSH_OUT_Y_H, 1);
+		LIS3DSH_Read(&out_z_l, LIS3DSH_OUT_Z_L, 1);
+		LIS3DSH_Read(&out_z_h, LIS3DSH_OUT_Z_H, 1);
+		
+		out_x = (out_x_h & out_x_l);
+		out_y = (out_y_h & out_y_l);
+		out_z = (out_z_h & out_z_l);
+		
+		printf("out_x_h & out_x_l = %u\n", out_x);
+		printf("out_y_h & out_y_l = %u\n", out_y);
+		printf("out_z_h & out_z_l = %u\n", out_z);
 	}
 }
 
