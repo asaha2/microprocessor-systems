@@ -12,8 +12,9 @@
 #include "stm32f4xx_hal.h"
 #include "supporting_functions.h"
 #include "lis3dsh.h"
-#define ARM_MATH_CM4
-#include "arm_math.h"
+// #define ARM_MATH_CM4
+// #include "arm_math.h"
+#include "math.h"
 
 
 /* Private variables ---------------------------------------------------------*/
@@ -28,7 +29,7 @@ typedef struct kalman_struct{
 }kalman_state;
 
 LIS3DSH_InitTypeDef LIS3DSH_InitStruct;
-// LIS3DSH_DRYInterruptConfigTypeDef LIS3DSH_InterruptConfigStruct;
+LIS3DSH_DRYInterruptConfigTypeDef LIS3DSH_InterruptConfigStruct;
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config	(void);
@@ -40,9 +41,18 @@ int main(void){
 	uint8_t out_x_l, out_x_h;
 	uint8_t out_y_l, out_y_h; 
 	uint8_t out_z_l, out_z_h;
+	
 	int out_x, out_y, out_z;
-	int output[1] = {0};
-	kalman_state kstate;
+	int output_x[1] = {0};
+	int output_y[1] = {0};
+	int output_z[1] = {0};
+	
+	kalman_state kstate_x;
+	kalman_state kstate_y;
+	kalman_state kstate_z;
+	
+	float den_pitch, den_roll;
+	float pitch, roll;
 	
 	/* MCU Configuration----------------------------------------------------------*/
   HAL_Init();
@@ -53,17 +63,21 @@ int main(void){
   /* Initialize all configured peripherals */
 	LIS3DSH_InitStruct.AA_Filter_BW = LIS3DSH_AA_BW_50;
 	LIS3DSH_InitStruct.Axes_Enable = LIS3DSH_XYZ_ENABLE;
-	LIS3DSH_InitStruct.Continous_Update = LIS3DSH_ContinousUpdate_Enabled;
+	LIS3DSH_InitStruct.Continous_Update = LIS3DSH_ContinousUpdate_Disabled;
 	LIS3DSH_InitStruct.Full_Scale = LIS3DSH_FULLSCALE_2;
 	LIS3DSH_InitStruct.Power_Mode_Output_DataRate = LIS3DSH_DATARATE_100;
 	LIS3DSH_InitStruct.Self_Test = LIS3DSH_SELFTEST_NORMAL;
 	
-	// LIS3DSH_InterruptConfigStruct.Dataready_Interrupt = LIS3DSH_DATA_READY_INTERRUPT_ENABLED;
-	// LIS3DSH_InterruptConfigStruct.Interrupt_signal = LIS3DSH_ACTIVE_HIGH_INTERRUPT_SIGNAL;
-	// LIS3DSH_InterruptConfigStruct.Interrupt_type = LIS3DSH_INTERRUPT_REQUEST_PULSED;
+	LIS3DSH_InterruptConfigStruct.Dataready_Interrupt = LIS3DSH_DATA_READY_INTERRUPT_ENABLED;
+	LIS3DSH_InterruptConfigStruct.Interrupt_signal = LIS3DSH_ACTIVE_HIGH_INTERRUPT_SIGNAL;
+	LIS3DSH_InterruptConfigStruct.Interrupt_type = LIS3DSH_INTERRUPT_REQUEST_PULSED;
 	
 	LIS3DSH_Init(&LIS3DSH_InitStruct);
-	Reset(&kstate);	
+	LIS3DSH_DataReadyInterruptConfig(&LIS3DSH_InterruptConfigStruct);
+	
+	Reset(&kstate_x);	
+	Reset(&kstate_y);
+	Reset(&kstate_z);
 
 	while (1){
 		
@@ -78,8 +92,14 @@ int main(void){
 		out_y = (out_y_h & out_y_l);
 		out_z = (out_z_h & out_z_l);
 		
-		if(!Kalmanfilter_C(out_y, output, &kstate)){
-			printf("%u\n", output[0]);
+		if(!Kalmanfilter_C(out_x, output_x, &kstate_x) && !Kalmanfilter_C(out_y, output_y, &kstate_y) 
+			&& !Kalmanfilter_C(out_z, output_z, &kstate_z)){				
+				// printf("%u | %u | %u\n", output_x[0], output_y[0], output_z[0]);
+				den_pitch = sqrt(pow(output_y[0], 2) + pow(output_z[0], 2));
+				den_roll 	= sqrt(pow(output_x[0], 2) + pow(output_z[0], 2));
+				pitch = atan(output_x[0] / den_pitch) * (180 / 3.1416);
+				roll = atan(output_y[0] / den_roll) * (180 / 3.1416);
+				printf("%f | %f\n", pitch, roll);
 		}
 	}
 }
@@ -93,7 +113,6 @@ int Kalmanfilter_C(int InputArray, int* OutputArray, kalman_state* kstate){
 	kstate->p = (1 - kstate->k) * kstate->p;
 
 	OutputArray[0] = kstate->x;
-	// printf("Measured position: %f Kalman position: %f\n", InputArray, OutputArray[0]);
 
 	/* Check for NaN */
 	if(kstate->x != kstate->x){
