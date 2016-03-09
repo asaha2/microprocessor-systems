@@ -41,6 +41,9 @@
 #include "main.h"
 #include "stm32f4xx_it.h"
 
+extern int interrupt;
+extern int counter;
+
 /** @addtogroup STM32F4xx_HAL_Examples
   * @{
   */
@@ -172,6 +175,21 @@ void SysTick_Handler(void)
 /*void PPP_IRQHandler(void)
 {
 }*/
+
+void EXTI0_IRQHandler(void){
+	
+	HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0);
+}
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
+
+	if(counter > 4){
+		interrupt++;
+		counter = 0;
+	}
+	counter++;
+	// printf("counter = %d, interrupt = %d\n", counter, interrupt);
+}
 
 /**
   * @}

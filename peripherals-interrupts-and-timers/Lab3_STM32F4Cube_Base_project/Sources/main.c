@@ -12,8 +12,6 @@
 #include "stm32f4xx_hal.h"
 #include "supporting_functions.h"
 #include "lis3dsh.h"
-// #define ARM_MATH_CM4
-// #include "arm_math.h"
 #include "math.h"
 
 
@@ -30,6 +28,11 @@ typedef struct kalman_struct{
 
 LIS3DSH_InitTypeDef LIS3DSH_InitStruct;
 LIS3DSH_DRYInterruptConfigTypeDef LIS3DSH_InterruptConfigStruct;
+GPIO_InitTypeDef GPIOE_Init;
+TIM_Base_InitTypeDef TIM_Base_InitStruct;
+
+int interrupt;
+int counter;
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config	(void);
@@ -67,39 +70,64 @@ int main(void){
 	LIS3DSH_InitStruct.Full_Scale = LIS3DSH_FULLSCALE_2;
 	LIS3DSH_InitStruct.Power_Mode_Output_DataRate = LIS3DSH_DATARATE_100;
 	LIS3DSH_InitStruct.Self_Test = LIS3DSH_SELFTEST_NORMAL;
+	LIS3DSH_Init(&LIS3DSH_InitStruct);
 	
 	LIS3DSH_InterruptConfigStruct.Dataready_Interrupt = LIS3DSH_DATA_READY_INTERRUPT_ENABLED;
 	LIS3DSH_InterruptConfigStruct.Interrupt_signal = LIS3DSH_ACTIVE_HIGH_INTERRUPT_SIGNAL;
 	LIS3DSH_InterruptConfigStruct.Interrupt_type = LIS3DSH_INTERRUPT_REQUEST_PULSED;
-	
-	LIS3DSH_Init(&LIS3DSH_InitStruct);
 	LIS3DSH_DataReadyInterruptConfig(&LIS3DSH_InterruptConfigStruct);
+	
+	__HAL_RCC_GPIOE_CLK_ENABLE();	
+	GPIOE_Init.Mode = GPIO_MODE_IT_RISING;
+	GPIOE_Init.Pin = GPIO_PIN_0;
+	GPIOE_Init.Pull = GPIO_NOPULL;
+	GPIOE_Init.Speed = GPIO_SPEED_FREQ_HIGH;				
+	HAL_GPIO_Init(GPIOE, &GPIOE_Init);
+	
+	HAL_NVIC_EnableIRQ(EXTI0_IRQn);
+	HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
+	
+	TIM_Base_InitStruct.Prescaler = 10;
+	TIM_Base_InitStruct.CounterMode = TIM_COUNTERMODE_UP;
+	TIM_Base_InitStruct.Period = 10;
+	TIM_Base_InitStruct.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+	// TIM_Base_InitStruct.RepetitionCounter = 0;
+	TIM_Base_SetConfig(, &TIM_Base_InitStruct);
 	
 	Reset(&kstate_x);	
 	Reset(&kstate_y);
 	Reset(&kstate_z);
-
+	
+	counter = 0;
+	interrupt = 0;
+	
 	while (1){
-		
-		LIS3DSH_Read(&out_x_l, LIS3DSH_OUT_X_L, 1);
-		LIS3DSH_Read(&out_x_h, LIS3DSH_OUT_X_H, 1);
-		LIS3DSH_Read(&out_y_l, LIS3DSH_OUT_Y_L, 1);
-		LIS3DSH_Read(&out_y_h, LIS3DSH_OUT_Y_H, 1);
-		LIS3DSH_Read(&out_z_l, LIS3DSH_OUT_Z_L, 1);
-		LIS3DSH_Read(&out_z_h, LIS3DSH_OUT_Z_H, 1);
-		
-		out_x = (out_x_h & out_x_l);
-		out_y = (out_y_h & out_y_l);
-		out_z = (out_z_h & out_z_l);
-		
-		if(!Kalmanfilter_C(out_x, output_x, &kstate_x) && !Kalmanfilter_C(out_y, output_y, &kstate_y) 
-			&& !Kalmanfilter_C(out_z, output_z, &kstate_z)){				
-				// printf("%u | %u | %u\n", output_x[0], output_y[0], output_z[0]);
-				den_pitch = sqrt(pow(output_y[0], 2) + pow(output_z[0], 2));
-				den_roll 	= sqrt(pow(output_x[0], 2) + pow(output_z[0], 2));
-				pitch = atan(output_x[0] / den_pitch) * (180 / 3.1416);
-				roll = atan(output_y[0] / den_roll) * (180 / 3.1416);
-				printf("%f | %f\n", pitch, roll);
+						
+		// printf("main: counter = %d, interrupt = %d\n", counter, interrupt);
+		if(interrupt != 0){
+			interrupt = 0;
+			// printf("main: counter = %d, interrupt = %d\n", counter, interrupt);
+			
+			LIS3DSH_Read(&out_x_l, LIS3DSH_OUT_X_L, 1);
+			LIS3DSH_Read(&out_x_h, LIS3DSH_OUT_X_H, 1);
+			LIS3DSH_Read(&out_y_l, LIS3DSH_OUT_Y_L, 1);
+			LIS3DSH_Read(&out_y_h, LIS3DSH_OUT_Y_H, 1);
+			LIS3DSH_Read(&out_z_l, LIS3DSH_OUT_Z_L, 1);
+			LIS3DSH_Read(&out_z_h, LIS3DSH_OUT_Z_H, 1);
+			
+			out_x = (out_x_h & out_x_l);
+			out_y = (out_y_h & out_y_l);
+			out_z = (out_z_h & out_z_l);
+			
+			if(!Kalmanfilter_C(out_x, output_x, &kstate_x) && !Kalmanfilter_C(out_y, output_y, &kstate_y) 
+				&& !Kalmanfilter_C(out_z, output_z, &kstate_z)){				
+					// printf("%u | %u | %u\n", output_x[0], output_y[0], output_z[0]);
+					den_pitch = sqrt(pow(output_y[0], 2) + pow(output_z[0], 2));
+					den_roll 	= sqrt(pow(output_x[0], 2) + pow(output_z[0], 2));
+					pitch = atan(output_x[0] / den_pitch) * (180 / 3.1416);
+					roll = atan(output_y[0] / den_roll) * (180 / 3.1416);
+					printf("%f | %f\n", pitch, roll);
+			}
 		}
 	}
 }
