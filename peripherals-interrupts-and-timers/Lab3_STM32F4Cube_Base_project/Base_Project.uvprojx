@@ -515,6 +515,11 @@
               <FileType>1</FileType>
               <FilePath>.\Sources\7seg_display.c</FilePath>
             </File>
+            <File>
+              <FileName>gpio_config.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Sources\gpio_config.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

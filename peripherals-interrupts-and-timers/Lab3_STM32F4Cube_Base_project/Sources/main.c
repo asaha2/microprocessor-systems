@@ -17,12 +17,17 @@
 #include "sys_config.h"
 #include "MEMS_config.h"
 #include "7seg_display.h"
+#include "gpio_config.h"
 
 LIS3DSH_InitTypeDef LIS3DSH_InitStruct;
 LIS3DSH_DRYInterruptConfigTypeDef LIS3DSH_InterruptConfigStruct;
 GPIO_InitTypeDef GPIOE_Init;
 TIM_Base_InitTypeDef TIM_Base_InitStruct;
 TIM_HandleTypeDef TIM_HandleStruct;
+
+GPIO_InitTypeDef GPIOA_Init;						
+GPIO_InitTypeDef GPIOE_Init;						
+GPIO_InitTypeDef GPIOD_Init;
 
 int interrupt, interrupt_2;
 int counter;
@@ -36,6 +41,9 @@ int main(void){
 	float output_x[] = {0};
 	float output_y[] = {0};
 	float output_z[] = {0};
+	
+	int counter2 = 0; 
+	int counter3 = 1; 
 	
 	int parsed[] = {0, 0, 0, 0};
 	
@@ -54,6 +62,7 @@ int main(void){
 	MEMS_Init();
 	MEMS_Start_IT();
 	TIM3_Config();	
+	GPIO_Config();
 	
 	Reset(&kstate_x);	
 	Reset(&kstate_y);
@@ -83,9 +92,38 @@ int main(void){
 					// printf("%f | %f\n", pitch, roll);
 					// printf("%f\n", roll);
 					Parse(parsed, roll);
-					// printf("%d %d %d %d\n", parsed[3], parsed[2], parsed[1], parsed[0]);
+					printf("%d %d %d %d\n", parsed[3], parsed[2], parsed[1], parsed[0]);
 			}
 		}
+		
+		if(counter2 <= 10){
+			Display(parsed[3], 4);
+		}
+		
+		else if(counter2 <= 20){
+			Display(parsed[2], 3);
+		}
+		
+		else if(counter2 <= 30){
+			Display(parsed[0], 1);
+		}
+		
+		else{
+			Display(parsed[1], 2);						
+		}
+
+		if(counter3 > 500000){
+			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_1, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_RESET);
+			counter3 = 0;					
+		}
+		
+		if(counter2 > 40){
+			counter2 = 0;
+		}		
+		counter2++;
+		counter3++;
 	}
 }
 

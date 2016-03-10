@@ -49,3 +49,4 @@
 .\objects\main.o: .\Headers\sys_config.h
 .\objects\main.o: .\Headers\MEMS_config.h
 .\objects\main.o: .\Headers\7seg_display.h
+.\objects\main.o: .\Headers\gpio_config.h
