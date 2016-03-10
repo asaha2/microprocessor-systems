@@ -14,22 +14,19 @@
 #include "lis3dsh.h"
 #include "math.h"
 
-
-/* Private variables ---------------------------------------------------------*/
-
-
 typedef struct kalman_struct{
-	double q; 		// process noise covariance
-	double r; 		// measurement noise covariance
-	double x; 		// estimated value
-	double p; 		// estimation error covariance
-	double k; 		// adaptive kalman filter gain
+	float q; 		// process noise covariance
+	float r; 		// measurement noise covariance
+	float x; 		// estimated value
+	float p; 		// estimation error covariance
+	float k; 		// adaptive kalman filter gain
 }kalman_state;
 
 LIS3DSH_InitTypeDef LIS3DSH_InitStruct;
 LIS3DSH_DRYInterruptConfigTypeDef LIS3DSH_InterruptConfigStruct;
 GPIO_InitTypeDef GPIOE_Init;
 TIM_Base_InitTypeDef TIM_Base_InitStruct;
+TIM_HandleTypeDef TIM_HandleStruct;
 
 int interrupt;
 int counter;
@@ -37,18 +34,15 @@ int counter;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config	(void);
 void Reset(kalman_state* kinit);
-int Kalmanfilter_C(int InputArray, int* OutputArray, kalman_state* kstate);
+int Kalmanfilter_C(float InputArray, float* OutputArray, kalman_state* kstate);
 
 int main(void){	
-		
-	uint8_t out_x_l, out_x_h;
-	uint8_t out_y_l, out_y_h; 
-	uint8_t out_z_l, out_z_h;
+			
+	float read_acc[] = {0, 0, 0};
 	
-	int out_x, out_y, out_z;
-	int output_x[1] = {0};
-	int output_y[1] = {0};
-	int output_z[1] = {0};
+	float output_x[] = {0};
+	float output_y[] = {0};
+	float output_z[] = {0};
 	
 	kalman_state kstate_x;
 	kalman_state kstate_y;
@@ -87,12 +81,21 @@ int main(void){
 	HAL_NVIC_EnableIRQ(EXTI0_IRQn);
 	HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
 	
+	__HAL_RCC_TIM3_CLK_ENABLE();	
 	TIM_Base_InitStruct.Prescaler = 10;
 	TIM_Base_InitStruct.CounterMode = TIM_COUNTERMODE_UP;
 	TIM_Base_InitStruct.Period = 10;
 	TIM_Base_InitStruct.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-	// TIM_Base_InitStruct.RepetitionCounter = 0;
-	TIM_Base_SetConfig(, &TIM_Base_InitStruct);
+	TIM_Base_InitStruct.RepetitionCounter = 0;
+	
+	TIM_HandleStruct.Init = TIM_Base_InitStruct;
+	TIM_HandleStruct.Instance = TIM3;
+	TIM_HandleStruct.Channel = HAL_TIM_ACTIVE_CHANNEL_1;
+	if(HAL_TIM_Base_Init(&TIM_HandleStruct) != HAL_OK)printf("Error initializing TIM handle\n");
+	if(HAL_TIM_Base_Start_IT(&TIM_HandleStruct) != HAL_OK)printf("Error initializing TIM interrupt mode\n");
+	
+	HAL_NVIC_EnableIRQ(TIM3_IRQn);
+	HAL_NVIC_SetPriority(TIM3_IRQn, 0, 1);
 	
 	Reset(&kstate_x);	
 	Reset(&kstate_y);
@@ -108,20 +111,13 @@ int main(void){
 			interrupt = 0;
 			// printf("main: counter = %d, interrupt = %d\n", counter, interrupt);
 			
-			LIS3DSH_Read(&out_x_l, LIS3DSH_OUT_X_L, 1);
-			LIS3DSH_Read(&out_x_h, LIS3DSH_OUT_X_H, 1);
-			LIS3DSH_Read(&out_y_l, LIS3DSH_OUT_Y_L, 1);
-			LIS3DSH_Read(&out_y_h, LIS3DSH_OUT_Y_H, 1);
-			LIS3DSH_Read(&out_z_l, LIS3DSH_OUT_Z_L, 1);
-			LIS3DSH_Read(&out_z_h, LIS3DSH_OUT_Z_H, 1);
+			LIS3DSH_ReadACC(read_acc);	
+			// printf("%f | %f | %f\n", read_acc[0], read_acc[1], read_acc[2]);
 			
-			out_x = (out_x_h & out_x_l);
-			out_y = (out_y_h & out_y_l);
-			out_z = (out_z_h & out_z_l);
-			
-			if(!Kalmanfilter_C(out_x, output_x, &kstate_x) && !Kalmanfilter_C(out_y, output_y, &kstate_y) 
-				&& !Kalmanfilter_C(out_z, output_z, &kstate_z)){				
-					// printf("%u | %u | %u\n", output_x[0], output_y[0], output_z[0]);
+			if(!Kalmanfilter_C(read_acc[0], output_x, &kstate_x) && !Kalmanfilter_C(read_acc[1], output_y, &kstate_y) 
+				&& !Kalmanfilter_C(read_acc[2], output_z, &kstate_z)){				
+					
+					// printf("%f | %f | %f\n", output_x[0], output_y[0], output_z[0]);
 					den_pitch = sqrt(pow(output_y[0], 2) + pow(output_z[0], 2));
 					den_roll 	= sqrt(pow(output_x[0], 2) + pow(output_z[0], 2));
 					pitch = atan(output_x[0] / den_pitch) * (180 / 3.1416);
@@ -132,7 +128,7 @@ int main(void){
 	}
 }
 
-int Kalmanfilter_C(int InputArray, int* OutputArray, kalman_state* kstate){
+int Kalmanfilter_C(float InputArray, float* OutputArray, kalman_state* kstate){
 
 	/* Update the Kalman state parameters */
 	kstate->p = kstate->p + kstate->q;

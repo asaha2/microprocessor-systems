@@ -43,6 +43,7 @@
 
 extern int interrupt;
 extern int counter;
+extern TIM_HandleTypeDef TIM_HandleStruct;
 
 /** @addtogroup STM32F4xx_HAL_Examples
   * @{
@@ -189,6 +190,11 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 	}
 	counter++;
 	// printf("counter = %d, interrupt = %d\n", counter, interrupt);
+}
+
+void TIM3_IRQHandler(void){
+	
+	HAL_TIM_IRQHandler(&TIM_HandleStruct);
 }
 
 /**
