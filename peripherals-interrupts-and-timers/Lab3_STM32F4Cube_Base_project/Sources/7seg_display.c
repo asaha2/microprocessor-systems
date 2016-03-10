@@ -1,5 +1,43 @@
 #include "7seg_display.h"
 
+void Show(void){
+		
+	// printf("%d %d %d %d\n", displaying[3], displaying[2], displaying[1], displaying[0]);
+	if(interrupt_3 == 1){
+		displaying[3] = parsed[3];
+		displaying[2] = parsed[2];
+		displaying[1] = parsed[1];
+		displaying[0] = parsed[0];
+	}
+	
+	if(interrupt_2 < 2){
+		Display(displaying[3], 4);
+	}
+	
+	else if(interrupt_2 < 4){
+		Display(displaying[2], 3);
+	}
+	
+	else if(interrupt_2 < 6){
+		Display(displaying[0], 1);
+	}
+	
+	else{
+		Display(displaying[1], 2);						
+	}
+
+	if(interrupt_3 > 800){
+		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_1, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_RESET);
+		interrupt_3 = 0;					
+	}
+	
+	if(interrupt_2 > 6){
+		interrupt_2 = 0;
+	}	
+}
+
 void Parse(int* store, float sample){
 
 	/* Extract separate digits from decimal valued ADC output(to be used for 
