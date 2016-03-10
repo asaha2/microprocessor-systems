@@ -28,11 +28,12 @@ TIM_HandleTypeDef TIM_HandleStruct;
 GPIO_InitTypeDef GPIOA_Init;						
 GPIO_InitTypeDef GPIOE_Init;						
 GPIO_InitTypeDef GPIOD_Init;
+// GPIO_InitTypeDef GPIOC_Init;
 
 volatile int interrupt, interrupt_2, interrupt_3;
 int counter;
-int parsed[] = {0, 0, 0, 0};
-int displaying[] = {0, 0, 0, 0};
+int parsed[] = {0, 0, 0, 0, 0};
+int displaying[] = {0, 0, 0, 0, 0};
 
 /* Private function prototypes -----------------------------------------------*/
 
@@ -89,7 +90,7 @@ int main(void){
 					// printf("%f | %f\n", pitch, roll);
 					// printf("%f\n", roll);
 					Parse(parsed, roll);
-					printf("%d %d %d %d\n", parsed[3], parsed[2], parsed[1], parsed[0]);
+					printf("%d %d %d %d %d\n", parsed[3], parsed[2], parsed[1], parsed[0], parsed[4]);
 			}
 		}
 		Show();

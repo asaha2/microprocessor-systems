@@ -8,22 +8,47 @@ void Show(void){
 		displaying[2] = parsed[2];
 		displaying[1] = parsed[1];
 		displaying[0] = parsed[0];
+		displaying[4] = parsed[4];
 	}
 	
 	if(interrupt_2 < 2){
-		Display(displaying[3], 4);
+		if(displaying[3] != 0){
+			Display(displaying[3], 4);
+		}
+		else{
+			Display(displaying[2], 4);
+		}
 	}
 	
 	else if(interrupt_2 < 4){
-		Display(displaying[2], 3);
+		if(displaying[3] != 0){
+			Display(displaying[2], 3);
+		}
+		else{
+			Display(displaying[1], 4);
+		}
 	}
 	
 	else if(interrupt_2 < 6){
-		Display(displaying[0], 1);
+		if(displaying[3] != 0){
+			Display(displaying[1], 3);
+		}
+		else{
+			Display(displaying[0], 3);
+		}
+	}
+	
+	else if (interrupt_2 < 8){	
+		if(displaying[3] != 0){		
+			Display(displaying[0], 1);					
+		}
+		else{
+			Display(displaying[4], 1);
+		}
 	}
 	
 	else{
-		Display(displaying[1], 2);						
+		Display(11, 0);
 	}
 
 	if(interrupt_3 > 800){
@@ -33,7 +58,7 @@ void Show(void){
 		interrupt_3 = 0;					
 	}
 	
-	if(interrupt_2 > 6){
+	if(interrupt_2 > 10){
 		interrupt_2 = 0;
 	}	
 }
@@ -43,6 +68,8 @@ void Parse(int* store, float sample){
 	/* Extract separate digits from decimal valued ADC output(to be used for 
 		* output of digits to the 7 segment display */ 
 	int sample2, i = 0;
+	
+	printf("%f\n", sample);
 	
 	sample2 = sample * 10;
 	while(i < 2){
@@ -55,6 +82,9 @@ void Parse(int* store, float sample){
 	store[3] = store[2];
 	store[2] = store[1];
 	store[1] = 10;
+	
+	store[4] = ((int)(sample * 100) % 100) % 10; 
+	// printf("%d %d %d %d %d\n", store[3], store[2], store[1], store[0], store[4]);
 }
 
 /**
@@ -71,6 +101,7 @@ void Display(int number, int position){
 	if(position == 4){
 		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_RESET);
 		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET);
 		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_1, GPIO_PIN_SET);
 	}
 	
@@ -78,14 +109,24 @@ void Display(int number, int position){
 	else if(position == 3 || position == 2){		
 		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_1, GPIO_PIN_RESET);
 		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET);
 		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, GPIO_PIN_SET);
 	}
 	
 	/* Select GPIO pin for displaying 4th digit */
+	else if(position == 1){
+		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_1, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_SET);
+	}
+	
+	/* Select GPIO pin for displaying degrees */
 	else{
 		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_1, GPIO_PIN_RESET);
 		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, GPIO_PIN_RESET);
-		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_SET);
 	}
 
 	switch(number){
@@ -221,6 +262,18 @@ void Display(int number, int position){
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_RESET);
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_11, GPIO_PIN_SET);	
 			break;		
+		
+		/* Selection case for displaying the degree */
+		case 11:
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_5, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_6, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_7, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_11, GPIO_PIN_RESET);
+			break;
 	}
 }
 
