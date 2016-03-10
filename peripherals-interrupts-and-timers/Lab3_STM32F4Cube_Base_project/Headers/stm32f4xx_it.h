@@ -47,6 +47,11 @@
 #include "main.h"
 
 /* Exported types ------------------------------------------------------------*/
+	 
+extern int interrupt, interrupt_2;
+extern int counter;
+extern TIM_HandleTypeDef TIM_HandleStruct;
+	 
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */

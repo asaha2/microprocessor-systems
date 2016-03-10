@@ -45,3 +45,6 @@
 .\objects\main.o: .\Headers\supporting_functions.h
 .\objects\main.o: .\Accelerometer\inc\lis3dsh.h
 .\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\objects\main.o: .\Headers\kalman_filter.h
+.\objects\main.o: .\Headers\sys_config.h
+.\objects\main.o: .\Headers\MEMS_config.h

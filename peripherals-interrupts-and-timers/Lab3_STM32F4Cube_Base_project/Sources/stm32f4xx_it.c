@@ -41,7 +41,7 @@
 #include "main.h"
 #include "stm32f4xx_it.h"
 
-extern int interrupt;
+extern int interrupt, interrupt_2;
 extern int counter;
 extern TIM_HandleTypeDef TIM_HandleStruct;
 
