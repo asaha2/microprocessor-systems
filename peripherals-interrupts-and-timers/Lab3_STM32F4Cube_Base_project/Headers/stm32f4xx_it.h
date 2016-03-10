@@ -48,7 +48,7 @@
 
 /* Exported types ------------------------------------------------------------*/
 	 
-extern int interrupt, interrupt_2;
+extern volatile int interrupt, interrupt_2, interrupt_3;
 extern int counter;
 extern TIM_HandleTypeDef TIM_HandleStruct;
 	 
@@ -66,6 +66,7 @@ void DebugMon_Handler(void);
 void PendSV_Handler(void);
 void SysTick_Handler(void);
 void EXTI0_IRQHandler(void);
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim);
 
 #ifdef __cplusplus
 }

@@ -44,7 +44,7 @@ void TIM3_Config(void){
 	__HAL_RCC_TIM3_CLK_ENABLE();	
 	TIM_Base_InitStruct.Prescaler = 1000;
 	TIM_Base_InitStruct.CounterMode = TIM_COUNTERMODE_UP;
-	TIM_Base_InitStruct.Period = 3360;
+	TIM_Base_InitStruct.Period = 84;
 	TIM_Base_InitStruct.ClockDivision = TIM_CLOCKDIVISION_DIV1;
 	TIM_Base_InitStruct.RepetitionCounter = 0;
 	

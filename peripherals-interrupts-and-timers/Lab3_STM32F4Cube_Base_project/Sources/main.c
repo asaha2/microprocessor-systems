@@ -29,7 +29,7 @@ GPIO_InitTypeDef GPIOA_Init;
 GPIO_InitTypeDef GPIOE_Init;						
 GPIO_InitTypeDef GPIOD_Init;
 
-int interrupt, interrupt_2;
+volatile int interrupt, interrupt_2, interrupt_3;
 int counter;
 
 /* Private function prototypes -----------------------------------------------*/
@@ -41,11 +41,9 @@ int main(void){
 	float output_x[] = {0};
 	float output_y[] = {0};
 	float output_z[] = {0};
-	
-	int counter2 = 0; 
-	int counter3 = 1; 
-	
+		
 	int parsed[] = {0, 0, 0, 0};
+	int displaying[] = {0, 0, 0, 0};
 	
 	kalman_state kstate_x;
 	kalman_state kstate_y;
@@ -96,34 +94,40 @@ int main(void){
 			}
 		}
 		
-		if(counter2 <= 10){
-			Display(parsed[3], 4);
+		// printf("%d %d %d %d\n", displaying[3], displaying[2], displaying[1], displaying[0]);
+		if(interrupt_3 == 1){
+			displaying[3] = parsed[3];
+			displaying[2] = parsed[2];
+			displaying[1] = parsed[1];
+			displaying[0] = parsed[0];
 		}
 		
-		else if(counter2 <= 20){
-			Display(parsed[2], 3);
+		if(interrupt_2 < 2){
+			Display(displaying[3], 4);
 		}
 		
-		else if(counter2 <= 30){
-			Display(parsed[0], 1);
+		else if(interrupt_2 < 4){
+			Display(displaying[2], 3);
+		}
+		
+		else if(interrupt_2 < 6){
+			Display(displaying[0], 1);
 		}
 		
 		else{
-			Display(parsed[1], 2);						
+			Display(displaying[1], 2);						
 		}
 
-		if(counter3 > 500000){
+		if(interrupt_3 > 800){
 			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_1, GPIO_PIN_RESET);
 			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, GPIO_PIN_RESET);
 			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_RESET);
-			counter3 = 0;					
+			interrupt_3 = 0;					
 		}
 		
-		if(counter2 > 40){
-			counter2 = 0;
+		if(interrupt_2 > 6){
+			interrupt_2 = 0;
 		}		
-		counter2++;
-		counter3++;
 	}
 }
 
