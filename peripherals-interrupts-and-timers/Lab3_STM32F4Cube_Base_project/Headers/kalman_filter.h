@@ -1,5 +1,3 @@
-#include "stdint.h"
-#include <stdio.h>
 
 typedef struct kalman_struct{
 	float q; 		// process noise covariance

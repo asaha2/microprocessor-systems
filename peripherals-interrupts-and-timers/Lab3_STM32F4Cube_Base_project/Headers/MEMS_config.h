@@ -1,5 +1,3 @@
-#include "stdint.h"
-#include <stdio.h>
 #include "stm32f4xx_hal.h"
 #include "lis3dsh.h"
 

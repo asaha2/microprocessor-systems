@@ -48,3 +48,4 @@
 .\objects\main.o: .\Headers\kalman_filter.h
 .\objects\main.o: .\Headers\sys_config.h
 .\objects\main.o: .\Headers\MEMS_config.h
+.\objects\main.o: .\Headers\7seg_display.h

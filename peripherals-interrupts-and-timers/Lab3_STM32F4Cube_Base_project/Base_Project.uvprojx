@@ -510,6 +510,11 @@
               <FileType>1</FileType>
               <FilePath>.\Sources\sys_config.c</FilePath>
             </File>
+            <File>
+              <FileName>7seg_display.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Sources\7seg_display.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
