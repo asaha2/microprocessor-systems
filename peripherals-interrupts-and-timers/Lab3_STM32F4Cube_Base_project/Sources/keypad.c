@@ -1,6 +1,6 @@
 #include "keypad.h"
 
-char Display_Key(void){
+char Get_Key(void){
 
 	temp_col = sample_col;
 	temp_row = sample_row;
@@ -21,7 +21,7 @@ char Display_Key(void){
 
 // row = output; column = input
 int Get_Column(void){
-
+	
 	__HAL_RCC_GPIOC_CLK_ENABLE();
 	__HAL_RCC_GPIOB_CLK_ENABLE();
 	
@@ -45,25 +45,40 @@ int Get_Column(void){
 	GPIOC_Init.Pin = GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6;
 	GPIOC_Init.Pull = GPIO_PULLUP;
 	GPIOC_Init.Speed = GPIO_SPEED_FREQ_HIGH;	
-	HAL_GPIO_Init(GPIOC, &GPIOC_Init);	
+	HAL_GPIO_Init(GPIOC, &GPIOC_Init);
 	
-	//====================//====================//====================//
-	
-	if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_4) == GPIO_PIN_RESET){
-		while(interrupt_4 < 80);
+	if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_4) == GPIO_PIN_RESET 
+			&& HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_5) == GPIO_PIN_SET
+			&& HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_6) == GPIO_PIN_SET){
+		while(interrupt_4 < 50);
 		interrupt_4 = 0;
-		return 4;
+		// printf("%d\n", 4);
+		if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_4) == GPIO_PIN_RESET 
+			&& HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_5) == GPIO_PIN_SET
+			&& HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_6) == GPIO_PIN_SET)return 4;
 	}
-	if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_5) == GPIO_PIN_RESET){
-		while(interrupt_4 < 80);
+			
+	else if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_4) == GPIO_PIN_SET 
+			&& HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_5) == GPIO_PIN_RESET
+			&& HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_6) == GPIO_PIN_SET){
+		while(interrupt_4 < 50);
 		interrupt_4 = 0;
-		return 5;
+		// printf("%d\n", 5);
+		if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_4) == GPIO_PIN_SET 
+			&& HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_5) == GPIO_PIN_RESET
+			&& HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_6) == GPIO_PIN_SET)return 5;
 	}
-	if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_6) == GPIO_PIN_RESET){
-		while(interrupt_4 < 80);
+			
+	else if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_4) == GPIO_PIN_SET 
+			&& HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_5) == GPIO_PIN_SET
+			&& HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_6) == GPIO_PIN_RESET){
+		while(interrupt_4 < 50);
 		interrupt_4 = 0;
-		return 6;
-	}
+		// printf("%d\n", 6);
+		if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_4) == GPIO_PIN_SET 
+			&& HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_5) == GPIO_PIN_SET
+			&& HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_6) == GPIO_PIN_RESET)return 6;
+	}			
 	return NULL;
 }
 
@@ -94,27 +109,57 @@ int Get_Row(void){
 	GPIOB_Init.Speed = GPIO_SPEED_FREQ_HIGH;	
 	HAL_GPIO_Init(GPIOB, &GPIOB_Init);
 	
-	//====================//====================//====================//
-	
-	if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_11) == GPIO_PIN_RESET){
-		while(interrupt_4 < 80);
+	if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_11) == GPIO_PIN_RESET 
+			&& HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12) == GPIO_PIN_SET
+			&& HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_13) == GPIO_PIN_SET
+			&& HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_14) == GPIO_PIN_SET){
+
+		while(interrupt_4 < 50);
 		interrupt_4 = 0;
-		return 11;
+		// printf("%d\n", 11);
+		if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_11) == GPIO_PIN_RESET 
+			&& HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12) == GPIO_PIN_SET
+			&& HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_13) == GPIO_PIN_SET
+			&& HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_14) == GPIO_PIN_SET)return 11;
 	}
-	if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12) == GPIO_PIN_RESET){
-		while(interrupt_4 < 80);
+			
+	else if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_11) == GPIO_PIN_SET 
+			&& HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12) == GPIO_PIN_RESET
+			&& HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_13) == GPIO_PIN_SET
+			&& HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_14) == GPIO_PIN_SET){
+		while(interrupt_4 < 50);
 		interrupt_4 = 0;
-		return 12;
+		// printf("%d\n", 12);
+		if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_11) == GPIO_PIN_SET 
+			&& HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12) == GPIO_PIN_RESET
+			&& HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_13) == GPIO_PIN_SET
+			&& HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_14) == GPIO_PIN_SET)return 12;
 	}
-	if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_13) == GPIO_PIN_RESET){
-		while(interrupt_4 < 80);
+			
+	else if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_11) == GPIO_PIN_SET 
+			&& HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12) == GPIO_PIN_SET
+			&& HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_13) == GPIO_PIN_RESET
+			&& HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_14) == GPIO_PIN_SET){
+		while(interrupt_4 < 50);
 		interrupt_4 = 0;
-		return 13;
+		// printf("%d\n", 13);
+		if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_11) == GPIO_PIN_SET 
+			&& HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12) == GPIO_PIN_SET
+			&& HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_13) == GPIO_PIN_RESET
+			&& HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_14) == GPIO_PIN_SET)return 13;
 	}
-	if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_14) == GPIO_PIN_RESET){
-		while(interrupt_4 < 80);
+			
+	else if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_11) == GPIO_PIN_SET 
+			&& HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12) == GPIO_PIN_SET
+			&& HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_13) == GPIO_PIN_SET
+			&& HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_14) == GPIO_PIN_RESET){
+		while(interrupt_4 < 50);
 		interrupt_4 = 0;
-		return 14;
+		// printf("%d\n", 14);
+		if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_11) == GPIO_PIN_SET 
+			&& HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12) == GPIO_PIN_SET
+			&& HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_13) == GPIO_PIN_SET
+			&& HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_14) == GPIO_PIN_RESET)return 14;
 	}
 	return NULL;
 }

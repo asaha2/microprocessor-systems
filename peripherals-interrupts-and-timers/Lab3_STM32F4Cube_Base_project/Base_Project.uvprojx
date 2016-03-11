@@ -525,6 +525,11 @@
               <FileType>1</FileType>
               <FilePath>.\Sources\keypad.c</FilePath>
             </File>
+            <File>
+              <FileName>get_readings.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Sources\get_readings.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

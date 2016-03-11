@@ -1,0 +1,20 @@
+#include "kalman_filter.h"
+#include "math.h"
+#include "lis3dsh.h"
+#include "7seg_display.h"
+#define ARM_MATH_CM4
+#include "arm_math.h"
+
+extern volatile int interrupt;
+extern float read_acc[];
+extern float output_x[];
+extern float output_y[];
+extern float output_z[];
+extern kalman_state kstate_x;
+extern kalman_state kstate_y;
+extern kalman_state kstate_z;
+extern float den_pitch, den_roll;
+extern float pitch, roll;
+extern float diff_in, diff_out;
+
+void Get_Sensor_Data(float alarm);
