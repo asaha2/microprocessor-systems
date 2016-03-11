@@ -155,7 +155,8 @@ void PendSV_Handler(void)
   * @retval None
   */
 void SysTick_Handler(void)
-{
+{	
+	interrupt_4++;
 	HAL_IncTick();
 }
 
@@ -197,7 +198,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 
 	interrupt_2++;
 	interrupt_3++;
-	interrupt_4++;
 	interrupt_5++;
 	interrupt_6++;
 }

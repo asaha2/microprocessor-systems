@@ -12,7 +12,7 @@
 #include "stm32f4xx_hal.h"
 
 /* Extern declarations */
-extern volatile int interrupt_2, interrupt_3, interrupt_5, interrupt_6;
+extern volatile int interrupt_2, interrupt_3;
 extern int parsed[];
 extern int displaying[];
 

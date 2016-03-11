@@ -14,7 +14,7 @@
 /* Extern declarations */
 extern GPIO_InitTypeDef GPIOC_Init;
 extern GPIO_InitTypeDef GPIOB_Init;
-extern volatile int interrupt_4;
+extern volatile int interrupt_4, interrupt_5, interrupt_6;
 extern int sample_col, sample_row;
 extern int temp_col, temp_row;
 

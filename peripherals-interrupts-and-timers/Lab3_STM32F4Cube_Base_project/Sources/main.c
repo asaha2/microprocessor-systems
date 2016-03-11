@@ -19,6 +19,10 @@
 #include "get_readings.h"
 #define DESIRED_ANGLE 40.0
 
+typedef int bool;
+#define true 1
+#define false 0
+
 /* BLUE LED = DECREASE ANGLE */
 /* ORANGE LED = INCREASE ANGLE */
 
@@ -63,6 +67,40 @@ float diff_in, diff_out;
 
 int main(void){	
 	
+	bool flag = true;
+		
+	//===========================================
+	int count = 0;
+	int sw = 0;
+	interrupt_4 = 0;	
+	
+	__HAL_RCC_GPIOC_CLK_ENABLE();
+	__HAL_RCC_GPIOB_CLK_ENABLE();
+	
+	// row bits set as output
+	GPIOB_Init.Mode = GPIO_MODE_OUTPUT_PP;
+	GPIOB_Init.Pin = GPIO_PIN_11 | GPIO_PIN_12 | GPIO_PIN_13 | GPIO_PIN_14;
+	GPIOB_Init.Pull = GPIO_NOPULL;
+	GPIOB_Init.Speed = GPIO_SPEED_FREQ_HIGH;	
+	HAL_GPIO_Init(GPIOB, &GPIOB_Init);	
+	
+	// output row bits set to logic 0
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_14, GPIO_PIN_RESET);
+		
+	// column bits set to logic 1 during idle
+	GPIOC_Init.Mode = GPIO_MODE_INPUT;
+	GPIOC_Init.Pin = GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6;
+	GPIOC_Init.Pull = GPIO_PULLUP;
+	GPIOC_Init.Speed = GPIO_SPEED_FREQ_HIGH;	
+	HAL_GPIO_Init(GPIOC, &GPIOC_Init);
+	
+	
+	//===========================================
+	
+			
 	/* char char_1 = '\0';
 	char char_2 = '\0';
 	char char_3 = '\0';
@@ -70,7 +108,6 @@ int main(void){
 	
 	int lock = 0;
 	float temp; */
-			
 	/* MCU Configuration */
   HAL_Init();
 
@@ -86,15 +123,45 @@ int main(void){
 	Reset(&kstate_z);
 	
 	counter = 0;
-	interrupt = 0;	
+	interrupt = 0;
 	
 	while (1){
 		
-		Get_Sensor_Data(DESIRED_ANGLE);		
+		// Get_Sensor_Data(DESIRED_ANGLE);		
 		// if((roll - alarm) <= 4)Display_Alarm();
 		// Reset_Alarm();
 		
-//		
+		if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_4) == GPIO_PIN_RESET){
+				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_4, GPIO_PIN_SET);
+				interrupt_4 = 0;
+				while(interrupt_4 < 150);
+				if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_4) == GPIO_PIN_RESET){
+					printf("1\n");
+					HAL_GPIO_WritePin(GPIOC, GPIO_PIN_4, GPIO_PIN_SET);
+				}
+		}		
+				
+		//printf("%d\n", interrupt_4);
+//		if(interrupt_4 != 0){
+//			interrupt_4 = 0;
+//			if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_4) == GPIO_PIN_RESET){
+//				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_4, GPIO_PIN_SET);
+//				// printf("gets here\n");
+//				count = 0;
+//				sw = 0;
+//			}
+//			else{
+//				// printf("else gets here\n");
+//				count++;
+//			}
+//			// printf("%d\n", count);
+//			if(count == 10){
+//				sw = 1;
+//				count = 0;
+//				printf("%d\n", sw);
+//			}
+//		}
+		
 //		sample_col = Get_Column();
 //		sample_row = Get_Row();
 //		if(sample_col != NULL && sample_row != NULL && lock == 0 && char_1 == '\0'){
