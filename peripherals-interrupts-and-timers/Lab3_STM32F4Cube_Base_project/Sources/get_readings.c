@@ -19,7 +19,7 @@
    */
 void Get_Sensor_Data(float alarm){
 	
-	// printf("Gets here!\n");
+	// printf("Input angle = %f\n", alarm);
 	
 	// printf("main: counter = %d, interrupt = %d\n", counter, interrupt);
 	if(interrupt != 0){
@@ -43,7 +43,7 @@ void Get_Sensor_Data(float alarm){
 			roll  = (atan2(-output_y[0], output_z[0])*180.0)/3.1416;
 			if(roll < 100){
 				Parse(parsed, roll);								
-				printf("%d %d %d %d %d\n", parsed[3], parsed[2], parsed[1], parsed[0], parsed[4]);
+				// printf("%d %d %d %d %d\n", parsed[3], parsed[2], parsed[1], parsed[0], parsed[4]);
 			}
 			
 			else{
@@ -52,7 +52,7 @@ void Get_Sensor_Data(float alarm){
 				parsed[3] = ((int) roll / 100) % 10;
 				parsed[1] = 0;
 				parsed[4] = 0;				
-				printf("%d %d %d %d %d\n", parsed[3], parsed[2], parsed[1], parsed[0], parsed[4]);
+				// printf("%d %d %d %d %d\n", parsed[3], parsed[2], parsed[1], parsed[0], parsed[4]);
 			}
 		}
 	}		

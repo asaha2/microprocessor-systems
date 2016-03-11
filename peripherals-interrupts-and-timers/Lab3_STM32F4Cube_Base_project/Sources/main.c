@@ -19,6 +19,9 @@
 #include "get_readings.h"
 #define DESIRED_ANGLE 40.0
 
+/* BLUE LED = DECREASE ANGLE */
+/* ORANGE LED = INCREASE ANGLE */
+
 /* Function prototypes */
 void arm_abs_f32(float32_t *pSrc, float32_t *pDst, uint32_t blockSize);
 
@@ -65,7 +68,8 @@ int main(void){
 	char char_3 = '\0';
 	char char_4 = '\0';
 	
-	int lock = 0; */
+	int lock = 0;
+	float temp; */
 			
 	/* MCU Configuration */
   HAL_Init();
@@ -86,12 +90,11 @@ int main(void){
 	
 	while (1){
 		
-		Get_Sensor_Data(DESIRED_ANGLE);
-		
+		Get_Sensor_Data(DESIRED_ANGLE);		
 		// if((roll - alarm) <= 4)Display_Alarm();
 		// Reset_Alarm();
 		
-		
+//		
 //		sample_col = Get_Column();
 //		sample_row = Get_Row();
 //		if(sample_col != NULL && sample_row != NULL && lock == 0 && char_1 == '\0'){
@@ -121,7 +124,8 @@ int main(void){
 //				printf("char_3 = %c entered\n", char_3);
 //			}
 //		}else{
-//			Get_Sensor_Data();
+//			temp = char_1 - '0';
+//			Get_Sensor_Data(temp);
 //		}
 //		
 //		if(char_3 != '#'){
@@ -133,7 +137,9 @@ int main(void){
 //				printf("char_4 = %c entered\n", char_4);
 //			}
 //		}else{
-//			Get_Sensor_Data();
+//			temp = (char_1 - '0') * 10;
+//			temp = temp + (char_2 - '0');			
+//			Get_Sensor_Data(temp);
 //		}
 //		
 //		if(char_4 != '#'){
@@ -143,7 +149,10 @@ int main(void){
 //			char_3 = '\0';
 //			char_4 = '\0';
 //		}else{
-//			Get_Sensor_Data();
+//			temp = (char_1 - '0') * 100;
+//			temp = temp + ((char_2 - '0') * 10);
+//			temp = temp + (char_3 - '0');
+//			Get_Sensor_Data(temp);
 //		} 
 	}
 }
