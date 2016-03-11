@@ -1,5 +1,24 @@
 #include "7seg_display.h"
 
+void Show_Negative(void){
+
+	if(interrupt_2 < 3){
+		Display(12, 4);
+	}
+	
+	else if(interrupt_2 < 6){
+		Display(12, 3);
+	}
+	
+	else{
+		Display(12, 1);
+	}
+	
+	if(interrupt_2 > 10){
+		interrupt_2 = 0;
+	}
+}
+
 void Show(void){
 		
 	// printf("%d %d %d %d\n", displaying[3], displaying[2], displaying[1], displaying[0]);
@@ -272,6 +291,18 @@ void Display(int number, int position){
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_RESET);
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, GPIO_PIN_RESET);
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_11, GPIO_PIN_RESET);
+			break;
+		
+		/* Selection case for displaying the negative */
+		case 12:
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_5, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_6, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_7, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_SET);
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_11, GPIO_PIN_RESET);
 			break;
 	}

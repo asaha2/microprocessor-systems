@@ -7,3 +7,4 @@ extern int displaying[];
 void Display(int number, int position);
 void Parse(int* store, float sample);
 void Show(void);
+void Show_Negative(void);

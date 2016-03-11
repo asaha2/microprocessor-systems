@@ -91,12 +91,13 @@ int main(void){
 					roll = atan(output_y[0] / den_roll)  * (180 / 3.1416);
 					// printf("%f | %f\n", pitch, roll);					
 					Parse(parsed, roll);
-					// printf("%d %d %d %d %d\n", parsed[3], parsed[2], parsed[1], parsed[0], parsed[4]);
+					printf("%d %d %d %d %d\n", parsed[3], parsed[2], parsed[1], parsed[0], parsed[4]);
 			}
 		}
-		Show();
-		Get_Column();
-		Get_Row();
+		if(parsed[4] < 0 || parsed[3] < 0 || parsed[2] < 0 || parsed[1] < 0 || parsed[0] < 0) Show_Negative();
+		else Show();
+		// Get_Column();
+		// Get_Row();
 	}
 }
 
