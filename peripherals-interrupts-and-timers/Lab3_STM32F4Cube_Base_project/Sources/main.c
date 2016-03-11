@@ -65,49 +65,52 @@ float pitch, roll;
 
 float diff_in, diff_out;
 
-int main(void){	
-	
-	bool flag = true;
+int main(void){		
 		
 	//===========================================
-	int count = 0;
-	int sw = 0;
-	interrupt_4 = 0;	
-	
-	__HAL_RCC_GPIOC_CLK_ENABLE();
-	__HAL_RCC_GPIOB_CLK_ENABLE();
-	
-	// row bits set as output
-	GPIOB_Init.Mode = GPIO_MODE_OUTPUT_PP;
-	GPIOB_Init.Pin = GPIO_PIN_11 | GPIO_PIN_12 | GPIO_PIN_13 | GPIO_PIN_14;
-	GPIOB_Init.Pull = GPIO_NOPULL;
-	GPIOB_Init.Speed = GPIO_SPEED_FREQ_HIGH;	
-	HAL_GPIO_Init(GPIOB, &GPIOB_Init);	
-	
-	// output row bits set to logic 0
-	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_14, GPIO_PIN_RESET);
-		
-	// column bits set to logic 1 during idle
-	GPIOC_Init.Mode = GPIO_MODE_INPUT;
-	GPIOC_Init.Pin = GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6;
-	GPIOC_Init.Pull = GPIO_PULLUP;
-	GPIOC_Init.Speed = GPIO_SPEED_FREQ_HIGH;	
-	HAL_GPIO_Init(GPIOC, &GPIOC_Init);
+//	bool flag = true;
+//	int count = 0;
+//	int sw = 0;
+//	interrupt_4 = 0;	
+//	
+//	__HAL_RCC_GPIOC_CLK_ENABLE();
+//	__HAL_RCC_GPIOB_CLK_ENABLE();
+//	
+//	// row bits set as output
+//	GPIOB_Init.Mode = GPIO_MODE_OUTPUT_PP;
+//	GPIOB_Init.Pin = GPIO_PIN_11 | GPIO_PIN_12 | GPIO_PIN_13 | GPIO_PIN_14;
+//	GPIOB_Init.Pull = GPIO_NOPULL;
+//	GPIOB_Init.Speed = GPIO_SPEED_FREQ_HIGH;	
+//	HAL_GPIO_Init(GPIOB, &GPIOB_Init);	
+//	
+//	// output row bits set to logic 0
+//	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, GPIO_PIN_RESET);
+//	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET);
+//	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_RESET);
+//	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_14, GPIO_PIN_RESET);
+//		
+//	// column bits set to logic 1 during idle
+//	GPIOC_Init.Mode = GPIO_MODE_INPUT;
+//	GPIOC_Init.Pin = GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6;
+//	GPIOC_Init.Pull = GPIO_PULLUP;
+//	GPIOC_Init.Speed = GPIO_SPEED_FREQ_HIGH;	
+//	HAL_GPIO_Init(GPIOC, &GPIOC_Init);
 	
 	
 	//===========================================
 	
 			
-	/* char char_1 = '\0';
-	char char_2 = '\0';
-	char char_3 = '\0';
-	char char_4 = '\0';
+//	char char_1 = '\0';
+//	char char_2 = '\0';
+//	char char_3 = '\0';
+//	char char_4 = '\0';
+	char char_store[] = {'\0', '\0', '\0', '\0'};
+	int i = 0;
 	
 	int lock = 0;
-	float temp; */
+	float temp;
+	
+	
 	/* MCU Configuration */
   HAL_Init();
 
@@ -124,103 +127,120 @@ int main(void){
 	
 	counter = 0;
 	interrupt = 0;
+	interrupt_5 = 0;
+
 	
 	while (1){
 		
-		// Get_Sensor_Data(DESIRED_ANGLE);		
+		Get_Sensor_Data(DESIRED_ANGLE);		
 		// if((roll - alarm) <= 4)Display_Alarm();
 		// Reset_Alarm();
 		
-		if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_4) == GPIO_PIN_RESET){
-				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_4, GPIO_PIN_SET);
-				interrupt_4 = 0;
-				while(interrupt_4 < 150);
-				if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_4) == GPIO_PIN_RESET){
-					printf("1\n");
-					HAL_GPIO_WritePin(GPIOC, GPIO_PIN_4, GPIO_PIN_SET);
-				}
-		}		
-				
-		//printf("%d\n", interrupt_4);
-//		if(interrupt_4 != 0){
-//			interrupt_4 = 0;
-//			if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_4) == GPIO_PIN_RESET){
+//		if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_4) == GPIO_PIN_RESET){
 //				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_4, GPIO_PIN_SET);
-//				// printf("gets here\n");
-//				count = 0;
-//				sw = 0;
-//			}
-//			else{
-//				// printf("else gets here\n");
-//				count++;
-//			}
-//			// printf("%d\n", count);
-//			if(count == 10){
-//				sw = 1;
-//				count = 0;
-//				printf("%d\n", sw);
-//			}
-//		}
+//				interrupt_4 = 0;
+//				while(interrupt_4 < 150);
+//				if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_4) == GPIO_PIN_RESET){
+//					printf("1\n");
+//					HAL_GPIO_WritePin(GPIOC, GPIO_PIN_4, GPIO_PIN_SET);
+//				}
+//		}		
 		
 //		sample_col = Get_Column();
 //		sample_row = Get_Row();
-//		if(sample_col != NULL && sample_row != NULL && lock == 0 && char_1 == '\0'){
+//		if(sample_col != NULL && sample_row != NULL){
+//			printf("gets here\n");
 //			char_1 = Get_Key();
-//			printf("char_1 = %c entered\n", char_1);
-//			lock = 1;
+//			printf("%c\n", char_1);
 //		}
-//		
-//		if(char_1 != '#'){			
-//			sample_col = Get_Column();
-//			sample_row = Get_Row();
-//			if((char_1 == '0' || char_1 == '1' || char_1 == '2' || char_1 == '3' || char_1 == '4' || char_1 == '5' || char_1 == '6' ||
-//					char_1 == '7' || char_1 == '8' || char_1 == '9' || char_1 == '#') && sample_col != NULL && sample_row != NULL && char_2 == '\0'){
-//				char_2 = Get_Key();
-//				printf("char_2 = %c entered\n", char_2);
+				
+				
+		// if(lock == 0){
+							
+//			if(i == 0){
+//				sample_col = Get_Column();
+//				sample_row = Get_Row();
+//				if(sample_col != NULL && sample_row != NULL && char_store[i] == '\0'){
+//					char_store[i] = Get_Key();
+//					printf("char_[%d] = %c entered\n", i, char_store[i]);
+//					i++;
+//					// printf("going here %d\n", i);
+//				}
+//				// while(interrupt_5 < 50);
+//		}
+//			
+//		if(i == 1){
+//			printf("inside1\n");
+//			if(char_store[i-1] != '#'){			
+//				sample_col = Get_Column();
+//				sample_row = Get_Row();
+//				// printf("inside2\n");
+//				if(sample_col != NULL && sample_row != NULL && char_store[i] == '\0'){
+//					// printf("inside3\n");
+//					char_store[i] = Get_Key();
+//					printf("char_[%d] = %c entered\n", i, char_store[i]);
+//					i++;
+//					printf("going here %d\n", i);
+//				}
+//			} else{
+//					i = 0;
+//					char_store[i] = '\0';
 //			}
-//		}else{
-//			lock = 0;
+//			// while(interrupt_5 < 100);
 //		}
-//		
-//		if(char_2 != '#'){
-//			sample_col = Get_Column();
-//			sample_row = Get_Row();
-//			if((char_2 == '0' || char_2 == '1' || char_2 == '2' || char_2 == '3' || char_2 == '4' || char_2 == '5' || char_2 == '6' ||
-//					char_2 == '7' || char_2 == '8' || char_2 == '9' || char_2 == '#') && sample_col != NULL && sample_row != NULL && char_3 == '\0'){
-//				char_3 = Get_Key();
-//				printf("char_3 = %c entered\n", char_3);
+//			
+//		if(i == 2){
+//			if(char_store[i-1] != '#'){
+//				sample_col = Get_Column();
+//				sample_row = Get_Row();
+//				if(sample_col != NULL && sample_row != NULL && char_store[i] == '\0'){
+//					char_store[i] = Get_Key();
+//					printf("char_[%d] = %c entered\n", i, char_store[i]);
+//					i++;
+//					printf("going here %d\n", i);
+//				}
+//			} else{
+//	//				temp = char_1 - '0';
+//					// lock = 1;
+//					// Get_Sensor_Data(temp);
+//				printf("# entered\n");
 //			}
-//		}else{
-//			temp = char_1 - '0';
-//			Get_Sensor_Data(temp);
+//			// while(interrupt_5 < 150);
 //		}
-//		
-//		if(char_3 != '#'){
-//			sample_col = Get_Column();
-//			sample_row = Get_Row();
-//			if((char_3 == '0' || char_3 == '1' || char_3 == '2' || char_3 == '3' || char_3 == '4' || char_3 == '5' || char_3 == '6' ||
-//					char_3 == '7' || char_3 == '8' || char_3 == '9' || char_3 == '#') && sample_col != NULL && sample_row != NULL && char_4 == '\0'){
-//				char_4 = Get_Key();
-//				printf("char_4 = %c entered\n", char_4);
+//			
+//		else{
+//			if(char_store[i-1] != '#'){
+//				sample_col = Get_Column();
+//				sample_row = Get_Row();
+//				if(sample_col != NULL && sample_row != NULL && char_store[i] == '\0'){
+//					char_store[i] = Get_Key();
+//					printf("char_[%d] = %c entered\n", i, char_store[i]);
+//				}
+//			} else{
+//	//				temp = (char_1 - '0') * 10;
+//	//				temp = temp + (char_2 - '0');	
+//					// lock = 1;		
+//					// Get_Sensor_Data(temp);
+//				printf("# entered\n");
 //			}
-//		}else{
-//			temp = (char_1 - '0') * 10;
-//			temp = temp + (char_2 - '0');			
-//			Get_Sensor_Data(temp);
+//			// while(interrupt_5 < 200);
+//			
+//			
+//			if(char_store[0] != '#'){
+//				char_store[1] = '\0';
+//				char_store[2] = '\0';
+//				char_store[3] = '\0';
+//				i = 0;
+//			} else{
+//	//				temp = (char_1 - '0') * 100;
+//	//				temp = temp + ((char_2 - '0') * 10);
+//	//				temp = temp + (char_3 - '0');
+//					// lock = 1;
+//					// Get_Sensor_Data(temp);
+//				printf("# entered\n");
+//			} 
+//		// }
 //		}
-//		
-//		if(char_4 != '#'){
-//			lock = 0;
-//			char_1 = '\0';
-//			char_2 = '\0';
-//			char_3 = '\0';
-//			char_4 = '\0';
-//		}else{
-//			temp = (char_1 - '0') * 100;
-//			temp = temp + ((char_2 - '0') * 10);
-//			temp = temp + (char_3 - '0');
-//			Get_Sensor_Data(temp);
-//		} 
 	}
 }
 

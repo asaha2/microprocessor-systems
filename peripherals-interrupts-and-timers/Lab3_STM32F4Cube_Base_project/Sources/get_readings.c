@@ -33,6 +33,9 @@ void Get_Sensor_Data(float alarm){
 				&& !Kalmanfilter_C(read_acc[2], output_z, &kstate_z)){				
 				
 			// printf("%f | %f | %f\n", output_x[0], output_y[0], output_z[0]);
+			output_x[0] = output_x[0] + 0.10493;
+			output_y[0] = output_y[0] + 0.143217;
+			output_z[0] = output_z[0] + 0.665265;					
 			
 			den_pitch = sqrt(pow(output_y[0], 2) + pow(output_z[0], 2));
 			den_roll 	= sqrt(pow(output_x[0], 2) + pow(output_z[0], 2));
