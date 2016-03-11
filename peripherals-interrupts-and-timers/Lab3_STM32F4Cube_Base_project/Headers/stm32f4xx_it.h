@@ -48,7 +48,7 @@
 
 /* Exported types ------------------------------------------------------------*/
 	 
-extern volatile int interrupt, interrupt_2, interrupt_3;
+extern volatile int interrupt, interrupt_2, interrupt_3, interrupt_4, interrupt_5;
 extern int counter;
 extern TIM_HandleTypeDef TIM_HandleStruct;
 	 

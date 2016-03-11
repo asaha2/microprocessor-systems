@@ -32,10 +32,12 @@ GPIO_InitTypeDef GPIOD_Init;
 GPIO_InitTypeDef GPIOC_Init;
 GPIO_InitTypeDef GPIOB_Init;
 
-volatile int interrupt, interrupt_2, interrupt_3;
+volatile int interrupt, interrupt_2, interrupt_3, interrupt_4, interrupt_5;
 int counter;
 int parsed[] = {0, 0, 0, 0, 0};
 int displaying[] = {0, 0, 0, 0, 0};
+int sample_col, sample_row;
+int temp_col, temp_row;
 
 /* Private function prototypes -----------------------------------------------*/
 
@@ -71,8 +73,18 @@ int main(void){
 	counter = 0;
 	interrupt = 0;
 	
+	char char_1;
+		
+	sample_col = Get_Column();
+	sample_row = Get_Row();
+	if(sample_col != NULL && sample_row != NULL){
+		char_1 = Display_Key();
+	}
+	
+	
 	while (1){
-						
+		
+		
 		// printf("main: counter = %d, interrupt = %d\n", counter, interrupt);
 		if(interrupt != 0){
 			interrupt = 0;
@@ -91,13 +103,13 @@ int main(void){
 					roll = atan(output_y[0] / den_roll)  * (180 / 3.1416);
 					// printf("%f | %f\n", pitch, roll);					
 					Parse(parsed, roll);
-					printf("%d %d %d %d %d\n", parsed[3], parsed[2], parsed[1], parsed[0], parsed[4]);
+					// printf("%d %d %d %d %d\n", parsed[3], parsed[2], parsed[1], parsed[0], parsed[4]);
 			}
 		}
+		
 		if(parsed[4] < 0 || parsed[3] < 0 || parsed[2] < 0 || parsed[1] < 0 || parsed[0] < 0) Show_Negative();
 		else Show();
-		// Get_Column();
-		// Get_Row();
+		
 	}
 }
 

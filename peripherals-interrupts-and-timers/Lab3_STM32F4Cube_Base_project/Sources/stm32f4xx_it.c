@@ -197,6 +197,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 
 	interrupt_2++;
 	interrupt_3++;
+	interrupt_4++;
+	interrupt_5++;
 }
 
 /**

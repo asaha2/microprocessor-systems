@@ -1,7 +1,26 @@
 #include "keypad.h"
 
+char Display_Key(void){
+
+	temp_col = sample_col;
+	temp_row = sample_row;
+	
+	if(temp_col == 4 && temp_row == 11)return '1';
+	else if(temp_col == 5 && temp_row == 11)return '2';
+	else if(temp_col == 6 && temp_row == 11)return '3';
+	else if(temp_col == 4 && temp_row == 12)return '4';
+	else if(temp_col == 5 && temp_row == 12)return '5';
+	else if(temp_col == 6 && temp_row == 12)return '6';
+	else if(temp_col == 4 && temp_row == 13)return '7';
+	else if(temp_col == 5 && temp_row == 13)return '8';
+	else if(temp_col == 6 && temp_row == 13)return '9';
+	else if(temp_col == 4 && temp_row == 14)return '*';
+	else if(temp_col == 5 && temp_row == 14)return '0';
+	else return '#';
+}
+
 // row = output; column = input
-void Get_Column(void){
+int Get_Column(void){
 
 	__HAL_RCC_GPIOC_CLK_ENABLE();
 	__HAL_RCC_GPIOB_CLK_ENABLE();
@@ -30,13 +49,26 @@ void Get_Column(void){
 	
 	//====================//====================//====================//
 	
-	if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_4) == GPIO_PIN_RESET)printf("column 4 ");
-	if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_5) == GPIO_PIN_RESET)printf("column 5 ");
-	if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_6) == GPIO_PIN_RESET)printf("column 6 ");
+	if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_4) == GPIO_PIN_RESET){
+		while(interrupt_4 < 80);
+		interrupt_4 = 0;
+		return 4;
+	}
+	if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_5) == GPIO_PIN_RESET){
+		while(interrupt_4 < 80);
+		interrupt_4 = 0;
+		return 5;
+	}
+	if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_6) == GPIO_PIN_RESET){
+		while(interrupt_4 < 80);
+		interrupt_4 = 0;
+		return 6;
+	}
+	return NULL;
 }
 
 // row = input; column = output
-void Get_Row(void){
+int Get_Row(void){
 	
 	__HAL_RCC_GPIOC_CLK_ENABLE();
 	__HAL_RCC_GPIOB_CLK_ENABLE();
@@ -64,8 +96,25 @@ void Get_Row(void){
 	
 	//====================//====================//====================//
 	
-	if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_11) == GPIO_PIN_RESET)printf("row 11 \n");
-	if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12) == GPIO_PIN_RESET)printf("row 12 \n");
-	if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_13) == GPIO_PIN_RESET)printf("row 13 \n");
-	if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_14) == GPIO_PIN_RESET)printf("row 14 \n");
+	if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_11) == GPIO_PIN_RESET){
+		while(interrupt_4 < 80);
+		interrupt_4 = 0;
+		return 11;
+	}
+	if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12) == GPIO_PIN_RESET){
+		while(interrupt_4 < 80);
+		interrupt_4 = 0;
+		return 12;
+	}
+	if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_13) == GPIO_PIN_RESET){
+		while(interrupt_4 < 80);
+		interrupt_4 = 0;
+		return 13;
+	}
+	if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_14) == GPIO_PIN_RESET){
+		while(interrupt_4 < 80);
+		interrupt_4 = 0;
+		return 14;
+	}
+	return NULL;
 }
