@@ -69,7 +69,7 @@ void Parse(int* store, float sample){
 		* output of digits to the 7 segment display */ 
 	int sample2, i = 0;
 	
-	printf("%f\n", sample);
+	// printf("%f\n", sample);
 	
 	sample2 = sample * 10;
 	while(i < 2){

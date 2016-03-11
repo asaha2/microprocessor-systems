@@ -30,11 +30,5 @@ void GPIO_Config(void){
 	GPIOD_Init.Pin = GPIO_PIN_12 | GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15;
 	GPIOD_Init.Pull = GPIO_NOPULL;
 	GPIOD_Init.Speed = GPIO_SPEED_FREQ_HIGH;	
-	HAL_GPIO_Init(GPIOD, &GPIOD_Init);
-	
-//	GPIOC_Init.Mode = GPIO_MODE_OUTPUT_PP;
-//	GPIOC_Init.Pin = GPIO_PIN_2;
-//	GPIOC_Init.Pull = GPIO_NOPULL;
-//	GPIOC_Init.Speed = GPIO_SPEED_FREQ_HIGH;	
-//	HAL_GPIO_Init(GPIOC, &GPIOC_Init);
+	HAL_GPIO_Init(GPIOD, &GPIOD_Init);		
 }

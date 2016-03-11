@@ -520,6 +520,11 @@
               <FileType>1</FileType>
               <FilePath>.\Sources\gpio_config.c</FilePath>
             </File>
+            <File>
+              <FileName>keypad.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Sources\keypad.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

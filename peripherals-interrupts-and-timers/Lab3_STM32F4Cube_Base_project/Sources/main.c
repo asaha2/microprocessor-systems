@@ -18,6 +18,7 @@
 #include "MEMS_config.h"
 #include "7seg_display.h"
 #include "gpio_config.h"
+#include "keypad.h"
 
 LIS3DSH_InitTypeDef LIS3DSH_InitStruct;
 LIS3DSH_DRYInterruptConfigTypeDef LIS3DSH_InterruptConfigStruct;
@@ -28,7 +29,8 @@ TIM_HandleTypeDef TIM_HandleStruct;
 GPIO_InitTypeDef GPIOA_Init;						
 GPIO_InitTypeDef GPIOE_Init;						
 GPIO_InitTypeDef GPIOD_Init;
-// GPIO_InitTypeDef GPIOC_Init;
+GPIO_InitTypeDef GPIOC_Init;
+GPIO_InitTypeDef GPIOB_Init;
 
 volatile int interrupt, interrupt_2, interrupt_3;
 int counter;
@@ -86,14 +88,15 @@ int main(void){
 					den_pitch = sqrt(pow(output_y[0], 2) + pow(output_z[0], 2));
 					den_roll 	= sqrt(pow(output_x[0], 2) + pow(output_z[0], 2));
 					pitch = atan(output_x[0] / den_pitch) * (180 / 3.1416);
-					roll = atan(output_y[0] / den_roll) * (180 / 3.1416);
-					// printf("%f | %f\n", pitch, roll);
-					// printf("%f\n", roll);
+					roll = atan(output_y[0] / den_roll)  * (180 / 3.1416);
+					// printf("%f | %f\n", pitch, roll);					
 					Parse(parsed, roll);
-					printf("%d %d %d %d %d\n", parsed[3], parsed[2], parsed[1], parsed[0], parsed[4]);
+					// printf("%d %d %d %d %d\n", parsed[3], parsed[2], parsed[1], parsed[0], parsed[4]);
 			}
 		}
 		Show();
+		Get_Column();
+		Get_Row();
 	}
 }
 
