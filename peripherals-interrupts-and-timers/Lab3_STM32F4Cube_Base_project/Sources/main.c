@@ -2,13 +2,13 @@
   ******************************************************************************
   * File Name          : main.c
   * Description        : Main program subroutine
-	* Author						 : Ashraf Suyyagh
+	* Author						 : Aditya Saha & Habib Ahmed (Original template by Ashraf Suyyagh)
 	* Version            : 1.0.0
 	* Date							 : January 14th, 2016
   ******************************************************************************
   */
 	
-/* Includes ------------------------------------------------------------------*/
+/* Includes */
 #include "stm32f4xx_hal.h"
 #include "supporting_functions.h"
 #include "sys_config.h"
@@ -17,9 +17,12 @@
 #include "gpio_config.h"
 #include "keypad.h"
 #include "get_readings.h"
+#define DESIRED_ANGLE 40.0
 
+/* Function prototypes */
 void arm_abs_f32(float32_t *pSrc, float32_t *pDst, uint32_t blockSize);
 
+/* Global declarations */
 LIS3DSH_InitTypeDef LIS3DSH_InitStruct;
 LIS3DSH_DRYInterruptConfigTypeDef LIS3DSH_InterruptConfigStruct;
 GPIO_InitTypeDef GPIOE_Init;
@@ -32,7 +35,7 @@ GPIO_InitTypeDef GPIOD_Init;
 GPIO_InitTypeDef GPIOC_Init;
 GPIO_InitTypeDef GPIOB_Init;
 
-volatile int interrupt, interrupt_2, interrupt_3, interrupt_4, interrupt_5;
+volatile int interrupt, interrupt_2, interrupt_3, interrupt_4, interrupt_5, interrupt_6;
 int counter;
 
 float read_acc[] = {0, 0, 0};
@@ -83,7 +86,7 @@ int main(void){
 	
 	while (1){
 		
-		Get_Sensor_Data(30.0);
+		Get_Sensor_Data(DESIRED_ANGLE);
 		
 		// if((roll - alarm) <= 4)Display_Alarm();
 		// Reset_Alarm();

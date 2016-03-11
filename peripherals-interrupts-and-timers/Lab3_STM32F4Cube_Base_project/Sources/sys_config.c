@@ -1,6 +1,21 @@
+/**
+  ******************************************************************************
+  * File Name          : sys_config.c
+  * Description        : Configuration and implementation of system clocks and interrupt timers
+	* Author						 : Aditya Saha & Habib Ahmed
+	* Version            : 1.0.0
+	* Date							 : March 11th, 2016
+  ******************************************************************************
+  */
+	
+/* Includes */
 #include "sys_config.h"
 
-/** System Clock Configuration*/
+/**
+	 * @brief Configures the system clock
+	 * @param void
+   * @retval void
+   */
 void SystemClock_Config(void){
 
   RCC_OscInitTypeDef RCC_OscInitStruct;
@@ -39,6 +54,11 @@ void SystemClock_Config(void){
   HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
 }
 
+/**
+	 * @brief Configures the TIM3 peripheral timer for display countdown
+	 * @param void
+   * @retval void
+   */
 void TIM3_Config(void){
 
 	__HAL_RCC_TIM3_CLK_ENABLE();	

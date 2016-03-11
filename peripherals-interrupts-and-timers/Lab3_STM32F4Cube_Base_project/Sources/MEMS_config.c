@@ -1,5 +1,21 @@
+/**
+  ******************************************************************************
+  * File Name          : MEMS_config.c
+  * Description        : Initialization and configuration of MEMS sensor
+	* Author						 : Aditya Saha & Habib Ahmed
+	* Version            : 1.0.0
+	* Date							 : March 11th, 2016
+  ******************************************************************************
+  */
+
+/* Includes */
 #include "MEMS_config.h"
 
+/**
+	 * @brief Configure and initialize the external MEMS accelerometer 
+	 * @param void
+   * @retval void
+   */
 void MEMS_Init(void){
 	
   /* Initialize all configured peripherals */
@@ -12,6 +28,11 @@ void MEMS_Init(void){
 	LIS3DSH_Init(&LIS3DSH_InitStruct);
 }
 
+/**
+	 * @brief Enable interrupt mode on data arrival (Data Ready) for the MEMS sensor
+	 * @param void
+   * @retval void
+   */
 void MEMS_Start_IT(void){
 	
 	LIS3DSH_InterruptConfigStruct.Dataready_Interrupt = LIS3DSH_DATA_READY_INTERRUPT_ENABLED;

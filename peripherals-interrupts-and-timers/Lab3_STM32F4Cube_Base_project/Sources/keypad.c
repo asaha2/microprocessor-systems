@@ -1,5 +1,20 @@
+/**
+  ******************************************************************************
+  * File Name          : keypad.c
+  * Description        : Handles keypad UI configuration and input processing
+	* Author						 : Aditya Saha & Habib Ahmed
+	* Version            : 1.0.0
+	* Date							 : March 11th, 2016
+  ******************************************************************************
+  */
+
 #include "keypad.h"
 
+/**
+	 * @brief Looks up column and row entry of the key pressed 
+	 * @param void
+   * @retval char Returns digit from the lookup table
+   */
 char Get_Key(void){
 
 	temp_col = sample_col;
@@ -20,6 +35,11 @@ char Get_Key(void){
 }
 
 // row = output; column = input
+/**
+	 * @brief Look for interrupts from column scanning
+	 * @param void
+   * @retval void Column id of the interrupt generator
+   */
 int Get_Column(void){
 	
 	__HAL_RCC_GPIOC_CLK_ENABLE();
@@ -83,6 +103,11 @@ int Get_Column(void){
 }
 
 // row = input; column = output
+/**
+	 * @brief Look for interrupts from row scanning
+	 * @param void
+   * @retval void Row id of the interrupt generator
+   */
 int Get_Row(void){
 	
 	__HAL_RCC_GPIOC_CLK_ENABLE();

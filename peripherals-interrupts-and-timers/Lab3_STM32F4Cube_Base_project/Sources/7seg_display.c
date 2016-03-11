@@ -1,5 +1,21 @@
+/**
+  ******************************************************************************
+  * File Name          : 7seg_display.c
+  * Description        : Configures and updates 7 segment display intervally
+	* Author						 : Aditya Saha & Habib Ahmed
+	* Version            : 1.0.0
+	* Date							 : March 11th, 2016
+  ******************************************************************************
+  */
+
+/* Includes */
 #include "7seg_display.h"
 
+/**
+	 * @brief Displays on board LED as a signal to user to move the board up towards desired angle
+	 * @param void
+   * @retval void
+   */
 void Move_Up(void){
 	
 	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_RESET);
@@ -8,6 +24,11 @@ void Move_Up(void){
 	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_SET);		
 }
 
+/**
+	 * @brief Displays on board LED as a signal to user to move the board down towards desired angle
+	 * @param void
+   * @retval void
+   */
 void Move_Down(void){
 
 	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET);
@@ -16,6 +37,11 @@ void Move_Down(void){
 	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_SET);
 }
 
+/**
+	 * @brief Reset the LED pins once the alarm period ends
+	 * @param void
+   * @retval void
+   */
 void Reset_Alarm(void){
 
 	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_RESET);
@@ -24,6 +50,11 @@ void Reset_Alarm(void){
 	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_RESET);
 }
 
+/**
+	 * @brief Displays combination of on-board LEDs as a signal to user that the desired angle has been reached
+	 * @param void
+   * @retval void
+   */
 void Display_Alarm(void){
 
 		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_SET);
@@ -32,6 +63,11 @@ void Display_Alarm(void){
 		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_SET);
 }
 
+/**
+	 * @brief Displays a unique combination of segments to signify negative valued inputs
+	 * @param void
+   * @retval void
+   */
 void Show_Negative(void){
 
 	if(interrupt_2 < 3){
@@ -51,6 +87,11 @@ void Show_Negative(void){
 	}
 }
 
+/**
+	 * @brief Display the parsed values on the 7-segment display
+	 * @param void
+   * @retval void
+   */
 void Show(void){
 		
 	// printf("%d %d %d %d\n", displaying[3], displaying[2], displaying[1], displaying[0]);
@@ -82,7 +123,9 @@ void Show(void){
 	
 	else if(interrupt_2 < 6){
 		if(displaying[3] != 0){
-			Display(displaying[1], 3);
+			if(displaying[1] != 0){
+				Display(displaying[1], 3);
+			}
 		}
 		else{
 			Display(displaying[0], 3);
@@ -114,6 +157,11 @@ void Show(void){
 	}	
 }
 
+/**
+	 * @brief Parse the input values so as to extract the decimal and the whole digits (upto 2 decimal places)
+	 * @param void
+   * @retval void
+   */
 void Parse(int* store, float sample){
 
 	/* Extract separate digits from decimal valued ADC output(to be used for 
