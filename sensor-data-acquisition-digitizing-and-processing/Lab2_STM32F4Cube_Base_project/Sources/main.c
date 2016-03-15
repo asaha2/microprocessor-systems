@@ -18,11 +18,10 @@
 #include "system_config.h"
 #include "7seg_display.h"
 
-ADC_HandleTypeDef ADC1_Handle;
-
 /* Struct declarations for ADC handle and channel configurations */
 ADC_InitTypeDef ADC1_Init;							
 ADC_ChannelConfTypeDef ADC1_Channel;
+ADC_HandleTypeDef ADC1_Handle;
 
 /* Struct declarations for GPIO port configurations */
 GPIO_InitTypeDef GPIOA_Init;						

@@ -1,3 +1,14 @@
+/**
+  ******************************************************************************
+  * File Name          : 7seg_display.c
+  * Description        : Implements the logic for 7 segment display
+	* Author						 : Aditya Saha & Habib Ahmed
+	* Version            : 1.0.0
+	* Date							 : March 11th, 2016
+  ******************************************************************************
+  */
+
+/* Includes */
 #include "stdint.h"
 #include <stdio.h>
 #include "7seg_display.h"

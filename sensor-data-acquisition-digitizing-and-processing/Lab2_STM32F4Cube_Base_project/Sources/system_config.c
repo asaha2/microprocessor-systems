@@ -1,14 +1,25 @@
+/**
+  ******************************************************************************
+  * File Name          : system_config.c
+  * Description        : Configures system clock and initializes peripherals
+	* Author						 : Aditya Saha & Habib Ahmed
+	* Version            : 1.0.0
+	* Date							 : March 11th, 2016
+  ******************************************************************************
+  */
+
+/* Includes */
 #include "stdint.h"
 #include <stdio.h>
 #include "system_config.h"
 #include "stm32f4xx_hal.h"
 #include "supporting_functions.h"
 
-extern ADC_HandleTypeDef ADC1_Handle;
 
 /* Struct declarations for ADC handle and channel configurations */
 extern ADC_InitTypeDef ADC1_Init;							
 extern ADC_ChannelConfTypeDef ADC1_Channel;
+extern ADC_HandleTypeDef ADC1_Handle;
 
 /* Struct declarations for GPIO port configurations */
 extern GPIO_InitTypeDef GPIOA_Init;						

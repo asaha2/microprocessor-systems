@@ -1,3 +1,14 @@
+/**
+  ******************************************************************************
+  * File Name          : kalman_filter.c
+  * Description        : Implements Kalman filter to eliminate noise from data acquisition
+	* Author						 : Aditya Saha & Habib Ahmed
+	* Version            : 1.0.0
+	* Date							 : March 11th, 2016
+  ******************************************************************************
+  */
+
+/* Includes */
 #include "kalman_filter.h"
 #include "stdint.h"
 #include <stdio.h>
