@@ -1,6 +1,18 @@
+/**
+  ******************************************************************************
+  * File Name          : main.c
+  * Description        : Implementation of Kalman filter and all post-processing logic
+	* Author						 : Aditya Saha & Habib Ahmed
+	* Version            : 1.0.0
+	* Date							 : March 11th, 2016
+  ******************************************************************************
+  */
+
+/* Includes */
 #include <stdio.h>
 #include "arm_math.h"
 
+/* Global declarations */
 typedef struct kalman_struct{
 	float q; // process noise covariance
 	float r; // measurement noise covariance
@@ -9,10 +21,12 @@ typedef struct kalman_struct{
 	float k; // adaptive kalman filter gain
 }kalman_state;
 
+/* Function prototypes 1 */
 extern void Kalmanfilter_asm(float* output, float* input, int length, kalman_state* kstate);
 int Kalmanfilter_C(float* InputArray, float* OutputArray, kalman_state* kstate, int length);
 void reset(kalman_state* kinit);
 
+/* Function prototypes 2 */
 float mean(float* input, int length2);
 float root(float input);
 float squarer(float input);
@@ -21,6 +35,7 @@ void misc(float* result, float* diff, int length);
 float correlation(float* in, float* out, int length);
 void convolve(float* Result, float* in1, float* in2, int length);
 
+/* Function prototypes 3 */
 void arm_sub_f32(float32_t* pSrcA, float32_t* pSrcB, float32_t* pDst, uint32_t blockSize);
 void arm_mean_f32(float32_t* pSrc, uint32_t blockSize, float32_t* pResult);
 void arm_std_f32(float32_t*	pSrc, uint32_t 	blockSize, float32_t * pResult);	
@@ -85,6 +100,11 @@ int main(){
 	return 0;
 }
 
+/**
+	 * @brief Initializes the kalman state struct with set values
+	 * @param Kalman state struct
+   * @retval void
+   */
 void reset(kalman_state* kinit){
 
 	kinit->q = 0.1;
@@ -94,6 +114,14 @@ void reset(kalman_state* kinit){
 	kinit->k = 0;
 }
 
+/**
+	 * @brief Updates the kalman struct iteratively upon receiving stream of input data and correspondingly calculating output
+	 * @param InputArray- pointer to a floating point variable representing the input data stream
+	 * @param OutputArray- pointer to a floating point variable representing the output data stream resulting from the filter
+	 * @param kstate- pointer to a kalman_state structure representing the state variable of the filter
+	 * @param length- integer number representing the length of the input array
+	 * @retval int- integer number representing conversion status of Kalman filter (0 for no error, 1 for error)
+   */
 int Kalmanfilter_C(float* InputArray, float* OutputArray, kalman_state* kstate, int length){
 
 	int i;
@@ -119,6 +147,12 @@ int Kalmanfilter_C(float* InputArray, float* OutputArray, kalman_state* kstate, 
 	return 0;
 }
 
+/**
+	 * @brief Calculates the arithmetic mean
+	 * @param input- pointer to a floating point variable representing the input data string
+	 * @param length2- integer number representing the length of the input data string
+   * @retval floating point number representing the calculated value for arithmetic mean
+   */
 float mean(float* input, int length2){
     
 	int i;
@@ -129,6 +163,11 @@ float mean(float* input, int length2){
 	return (flt_temp1 / length2);
 }
 
+/**
+	 * @brief Calculates the root
+	 * @param input- floating point variable representing the input data 
+   * @retval floating point number representing the square root value of the input data
+   */
 float root(float input){
     
 	float flt_temp1;
@@ -146,11 +185,22 @@ float root(float input){
 	return flt_temp1;
 }
 
+/**
+	 * @brief Calculates the square of the input data
+	 * @param input- floating point variable representing the input data string
+   * @retval floating point number representing the calculated value for input squared
+   */
 float squarer(float input){
     
 	return input * input;
 }
 
+/**
+	 * @brief Calculates the subtraction value for 2 data strings
+	 * @param in1/in2- pointers to floating point variables representing 2 input data strings
+	 * @param length- integer number representing the length of the input data strings (should be same for both the strings)
+   * @retval void
+   */
 void subtract(float* sub, float* in1, float* in2, int length){
 	
 	int i;
@@ -159,6 +209,13 @@ void subtract(float* sub, float* in1, float* in2, int length){
 	}
 }
 
+/**
+	 * @brief Calcualtes the standard deviation of an input data string
+	 * @param diff- pointer to a floating point variable representing the input data string
+	 * @param result- pointer to a floating point variable representing the output data string
+	 * @param length- integer number representing the length of the input data string
+   * @retval void
+   */
 void misc(float* result, float* diff, int length){
     
 	float flt_temp1 = 0;
@@ -171,6 +228,12 @@ void misc(float* result, float* diff, int length){
 	result[1] = root(flt_temp1 / length - 1);
 }
 
+/**
+	 * @brief Calcualtes the correlation between two input data strings
+	 * @param in/out- pointers to floating point variables representing 2 input data strings
+	 * @param length- integer number representing the length of the input data string
+   * @retval floating point variable representing the calculated correlation between 2 input data strings
+   */
 float correlation(float* in, float* out, int length){
     
 	float mean_in = mean(in, length);
@@ -189,6 +252,13 @@ float correlation(float* in, float* out, int length){
 	return(flt_temp1 / root(flt_temp2 * flt_temp3));
 }
 
+/**
+	 * @brief Calcualtes the convolution of two input data strings
+	 * @param in1/in2- pointers to floating point variables representing 2 input data strings
+	 * @param length- integer number representing the length of the input data string
+	 * @param Result- pointer to floating point variable representing the output data sting for storing calculated data
+   * @retval void
+   */
 void convolve(float* Result, float* in1, float* in2, int length){
 	
 	int i, j, int_temp1, int_temp2;
