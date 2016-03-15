@@ -1,6 +1,6 @@
 /*******************************************************************************
   * @file    Thread_LED.c
-  * @author  Ashraf Suyyagh
+  * @author  Aditya Saha & Habib Ahmed (original template by Ashraf Suyyagh)
 	* @version V1.0.0
   * @date    17-January-2016
   * @brief   This file initializes one LED as an output, implements the LED thread 
@@ -27,8 +27,8 @@ int start_Thread_LED (void) {
 }
 
  /*----------------------------------------------------------------------------
-*      Thread  'LED_Thread': Toggles LED
- *---------------------------------------------------------------------------*/
+	*      Thread  'LED_Thread': Toggles LED
+	*---------------------------------------------------------------------------*/
 	void Thread_LED (void const *argument) {
 		while(1){
 				osDelay(1000);
