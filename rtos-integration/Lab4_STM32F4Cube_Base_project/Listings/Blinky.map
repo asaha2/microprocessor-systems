@@ -1,4 +1,4 @@
-Component: ARM Compiler 5.05 update 2 (build 169) Tool: armlink [4d0f33]
+Component: ARM Compiler 5.06 update 1 (build 61) Tool: armlink [4d35a8]
 
 ==============================================================================
 
@@ -1918,25 +1918,25 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
-        48          4          0          0        272     387472   main.o
-        62          6         86         32       6640       7554   rtx_conf_cm.o
-        36          8        392          0       1024        916   startup_stm32f407xx.o
-       432         26          0          4          0       4990   stm32f4xx_hal.o
-      2460         70          0          0          0       7575   stm32f4xx_hal_adc.o
-      1824         40          0          0          0       5694   stm32f4xx_hal_adc_ex.o
-       804         20          0          0          0      32311   stm32f4xx_hal_cortex.o
-      1560         16          8          0          0       5016   stm32f4xx_hal_dma.o
-       972         50          0          0          0       3835   stm32f4xx_hal_gpio.o
-      2636         66         16          0          0       5742   stm32f4xx_hal_rcc.o
-     10240        152          0          0          0      31026   stm32f4xx_hal_tim.o
-      3464         26          0          0          0      11826   stm32f4xx_hal_tim_ex.o
-       384        312          0          0          0        644   supporting_functions.o
-       732        138          0          0          0       1856   system_config.o
-       288         32         16          4          0       1807   system_stm32f4xx.o
-       136         22         16          4         20       1807   thread_led.o
+        48          4          0          0        272     387456   main.o
+        62          6         86         32       6640       7550   rtx_conf_cm.o
+        36          8        392          0       1024        912   startup_stm32f407xx.o
+       432         26          0          4          0       5002   stm32f4xx_hal.o
+      2460         70          0          0          0       7835   stm32f4xx_hal_adc.o
+      1824         40          0          0          0       5878   stm32f4xx_hal_adc_ex.o
+       804         20          0          0          0      32387   stm32f4xx_hal_cortex.o
+      1560         16          8          0          0       5216   stm32f4xx_hal_dma.o
+       972         50          0          0          0       3899   stm32f4xx_hal_gpio.o
+      2636         66         16          0          0       5806   stm32f4xx_hal_rcc.o
+     10240        152          0          0          0      32694   stm32f4xx_hal_tim.o
+      3464         26          0          0          0      12430   stm32f4xx_hal_tim_ex.o
+       384        312          0          0          0        656   supporting_functions.o
+       732        138          0          0          0       1852   system_config.o
+       288         32         16          4          0       1799   system_stm32f4xx.o
+       136         22         16          4         20       1831   thread_led.o
 
     ----------------------------------------------------------------------
-     26080        988        568         44       7960     510071   Object Totals
+     26080        988        568         44       7960     513203   Object Totals
          0          0         32          0          0          0   (incl. Generated)
          2          0          2          0          4          0   (incl. Padding)
 
@@ -1995,8 +1995,8 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-     31216       1516        568         88       8064     577399   Grand Totals
-     31216       1516        568         88       8064     577399   ELF Image Totals
+     31216       1516        568         88       8064     580531   Grand Totals
+     31216       1516        568         88       8064     580531   ELF Image Totals
      31216       1516        568         88          0          0   ROM Totals
 
 ==============================================================================
