@@ -11,6 +11,7 @@
 #include "stm32f4xx_hal.h"              // Keil::Device:STM32Cube HAL:Common
 #include "cmsis_os.h"                   // ARM::CMSIS:RTOS:Keil RTX
 #include "RTE_Components.h"             // Component selection
+#include <stdio.h>
 
 extern void initializeLED_IO			(void);
 extern void start_Thread_LED			(void);

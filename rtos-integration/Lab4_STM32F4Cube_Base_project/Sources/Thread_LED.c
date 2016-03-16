@@ -12,6 +12,7 @@
 #include "stm32f4xx_hal.h"
 
 void Thread_LED (void const *argument);                 // thread function
+void TextOut(const char *str);
 osThreadId tid_Thread_LED;                              // thread id
 osThreadDef(Thread_LED, osPriorityNormal, 1, 0);
 GPIO_InitTypeDef 				LED_configuration;
@@ -33,6 +34,7 @@ int start_Thread_LED (void) {
 		while(1){
 				osDelay(1000);
 				HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_12);
+				TextOut("works\n\r");
 			}
 	}
 /*----------------------------------------------------------------------------
@@ -49,6 +51,19 @@ int start_Thread_LED (void) {
 	HAL_GPIO_Init(GPIOD, &LED_configuration);	
 }
 	
+void TextOut(const char *str)
+{
+  do {
+    if(*str=='\n') ITM_SendChar('\r');
+    ITM_SendChar(*str);
+  } while(*str++);
+}
+	
 /*----------------------------------------------------------------------------
  *      
  *---------------------------------------------------------------------------*/
+
+
+
+
+
