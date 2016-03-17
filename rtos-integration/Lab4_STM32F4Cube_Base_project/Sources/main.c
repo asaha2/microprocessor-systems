@@ -12,11 +12,17 @@
 #include "cmsis_os.h"                   // ARM::CMSIS:RTOS:Keil RTX
 #include "RTE_Components.h"             // Component selection
 #include <stdio.h>
+#include "system_config.h"
+// #include "supporting_functions.h"
 
-extern void initializeLED_IO			(void);
+/* extern void initializeLED_IO			(void);
 extern void start_Thread_LED			(void);
 extern void Thread_LED(void const *argument);
-extern osThreadId tid_Thread_LED;
+extern osThreadId tid_Thread_LED; */
+
+extern int start_Thread_ADC(void);
+extern void Thread_ADC(void const *argument);
+extern ADC_HandleTypeDef ADC1_Handle;
 
 /**
 	These lines are mandatory to make CMSIS-RTOS RTX work with te new Cube HAL
@@ -30,56 +36,23 @@ uint32_t HAL_GetTick(void) {
 #endif
 
 /**
-  * System Clock Configuration
-  */
-void SystemClock_Config(void) {
-  RCC_OscInitTypeDef RCC_OscInitStruct;
-  RCC_ClkInitTypeDef RCC_ClkInitStruct;
-
-  /* Enable Power Control clock */
-  __HAL_RCC_PWR_CLK_ENABLE();
-
-  /* The voltage scaling allows optimizing the power consumption when the
-     device is clocked below the maximum system frequency (see datasheet). */
-  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
-
-  /* Enable HSE Oscillator and activate PLL with HSE as source */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLM = 8;
-  RCC_OscInitStruct.PLL.PLLN = 336;
-  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-  RCC_OscInitStruct.PLL.PLLQ = 7;
-  HAL_RCC_OscConfig(&RCC_OscInitStruct);
-
-  /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2
-     clocks dividers */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 |
-                                RCC_CLOCKTYPE_PCLK2;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
-  HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5);
-}
-
-/**
   * Main function
   */
 int main (void) {
 
-  osKernelInitialize();                     /* initialize CMSIS-RTOS          */
+  osKernelInitialize();
 
-  HAL_Init();                               /* Initialize the HAL Library     */
+  HAL_Init();
 
-  SystemClock_Config();                     /* Configure the System Clock     */
+  SystemClock_Config();
+	ADC_Config();
 
 	/* User codes goes here*/
-  initializeLED_IO();                       /* Initialize LED GPIO Buttons    */
-  start_Thread_LED();                       /* Create LED thread              */
+  // initializeLED_IO();                       /* Initialize LED GPIO Buttons    */
+  // start_Thread_LED();                       /* Create LED thread              */
+	
+	start_Thread_ADC();	
 	/* User codes ends here*/
   
-	osKernelStart();                          /* start thread execution         */
+	osKernelStart();
 }

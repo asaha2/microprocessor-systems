@@ -51,13 +51,13 @@ int start_Thread_LED (void) {
 	HAL_GPIO_Init(GPIOD, &LED_configuration);	
 }
 	
-void TextOut(const char *str)
+/* void TextOut(const char *str)
 {
   do {
     if(*str=='\n') ITM_SendChar('\r');
     ITM_SendChar(*str);
   } while(*str++);
-}
+} */
 	
 /*----------------------------------------------------------------------------
  *      
