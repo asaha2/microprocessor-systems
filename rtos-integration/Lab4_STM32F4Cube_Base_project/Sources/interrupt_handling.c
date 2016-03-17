@@ -7,11 +7,11 @@ void EXTI0_IRQHandler(void){
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 
-	if(counter > 4){
+	if(count > 4){
 		interrupt++;
-		counter = 0;
+		count = 0;
 	}
-	counter++;
+	count++;
 }
 
 void TIM3_IRQHandler(void){

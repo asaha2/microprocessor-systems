@@ -3,7 +3,7 @@
 
 int interrupt = 0;
 int interrupt2 = 0;
-int counter = 0;
+int count = 0;
 
 extern TIM_HandleTypeDef TIM_HandleStruct;
 

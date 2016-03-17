@@ -36,28 +36,28 @@ void Thread_DISP(void const *argument){
 			temp3 = disp;
 		}
 		
-		if(counter2 <= 1){
-			Display(temp3[3], 4);
-			if(temp3[2] > 2 && counter > 500) Blink();
+		if(counter2 <= 2){
+			if(temp3[3] == 3 && temp3[2] > 2 && counter > 100);// Display(100, 4);
+			else Display(temp3[3], 4);
 		}
 		
-		else if(counter2 <= 2){
-			Display(temp3[2], 3);
-			if(temp3[2] > 2 && counter > 500) Blink();
+		else if(counter2 <= 4){
+			if(temp3[3] == 3 && temp3[2] > 2 && counter > 100);// Display(100, 3);
+			else Display(temp3[2], 3);
 		}
 		
-		else if(counter2 <= 3){
-			Display(temp3[0], 1);
-			if(temp3[2] > 2 && counter > 500) Blink();
+		else if(counter2 <= 6){
+			if(temp3[3] == 3 && temp3[2] > 2 && counter > 100);// Display(100, 1);
+			else Display(temp3[0], 1);
 		}
 		
 		else{
-			Display(temp3[1], 2);
-			if(temp3[2] > 2 && counter > 500) Blink();						
+			if(temp3[3] == 3 && temp3[2] > 2 && counter > 100);// Display(100, 2);
+			else Display(temp3[1], 2);
 		}
 
 		/* Reset loop counter after 90 cycles */
-		if(counter > 1000){
+		if(counter > 1200){
 			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_1, GPIO_PIN_RESET);
 			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, GPIO_PIN_RESET);
 			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_RESET);
@@ -65,7 +65,7 @@ void Thread_DISP(void const *argument){
 		}
 		
 		/* Reset loop counter after 4 cycles */
-		if(counter2 > 4){
+		if(counter2 > 6){
 			counter2 = 0;
 		}
 		
