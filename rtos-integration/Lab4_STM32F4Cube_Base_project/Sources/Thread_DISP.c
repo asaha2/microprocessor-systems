@@ -2,7 +2,7 @@
 #include "stm32f4xx_hal.h"
 #include "7seg_display.h"
 
-void Thread_DISP (void const *argument);
+void Thread_DISP(void const *argument);
 osThreadId tid_Thread_DISP;
 osThreadDef(Thread_DISP, osPriorityNormal, 1, 0);
 
@@ -23,6 +23,7 @@ void Thread_DISP(void const *argument){
 	int* temp3;
 	int counter = 1;
 	int counter2 = 0;
+	
 	while(1){
 		// osDelay(10);
 		osMutexWait(temp_mutex_id, osWaitForever);
@@ -37,22 +38,22 @@ void Thread_DISP(void const *argument){
 		}
 		
 		if(counter2 <= 2){
-			if(temp3[3] == 3 && temp3[2] > 2 && counter > 100);// Display(100, 4);
+			if(temp3[3] == 3 && temp3[2] > 6 && counter > 100);
 			else Display(temp3[3], 4);
 		}
 		
 		else if(counter2 <= 4){
-			if(temp3[3] == 3 && temp3[2] > 2 && counter > 100);// Display(100, 3);
+			if(temp3[3] == 3 && temp3[2] > 6 && counter > 100);
 			else Display(temp3[2], 3);
 		}
 		
 		else if(counter2 <= 6){
-			if(temp3[3] == 3 && temp3[2] > 2 && counter > 100);// Display(100, 1);
+			if(temp3[3] == 3 && temp3[2] > 6 && counter > 100);
 			else Display(temp3[0], 1);
 		}
 		
 		else{
-			if(temp3[3] == 3 && temp3[2] > 2 && counter > 100);// Display(100, 2);
+			if(temp3[3] == 3 && temp3[2] > 6 && counter > 100);
 			else Display(temp3[1], 2);
 		}
 

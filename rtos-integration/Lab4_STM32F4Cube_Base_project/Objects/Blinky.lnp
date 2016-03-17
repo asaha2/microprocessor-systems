@@ -9,6 +9,7 @@
 ".\objects\7seg_display.o"
 ".\objects\interrupt_handling.o"
 ".\objects\thread_mems.o"
+".\objects\thread_disp2.o"
 ".\objects\lis3dsh.o"
 "C:\Keil_v5\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\Lib\ARM\arm_cortexM4lf_math.lib"
 "C:\Keil_v5\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\RTOS\RTX\LIB\ARM\RTX_CM4.lib"

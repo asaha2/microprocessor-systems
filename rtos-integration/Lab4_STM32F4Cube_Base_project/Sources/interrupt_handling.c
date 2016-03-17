@@ -22,5 +22,6 @@ void TIM3_IRQHandler(void){
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 
 	interrupt2++;
+	interrupt3++;
 }
 

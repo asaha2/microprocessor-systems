@@ -462,6 +462,11 @@
               <FileType>1</FileType>
               <FilePath>.\Sources\Thread_MEMS.c</FilePath>
             </File>
+            <File>
+              <FileName>Thread_DISP2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Sources\Thread_DISP2.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -938,6 +943,11 @@
               <FileType>1</FileType>
               <FilePath>.\Sources\Thread_MEMS.c</FilePath>
             </File>
+            <File>
+              <FileName>Thread_DISP2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Sources\Thread_DISP2.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1413,6 +1423,11 @@
               <FileName>Thread_MEMS.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Sources\Thread_MEMS.c</FilePath>
+            </File>
+            <File>
+              <FileName>Thread_DISP2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Sources\Thread_DISP2.c</FilePath>
             </File>
           </Files>
         </Group>

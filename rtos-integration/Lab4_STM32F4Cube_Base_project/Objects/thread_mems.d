@@ -37,3 +37,5 @@
 .\objects\thread_mems.o: C:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.7.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_uart.h
 .\objects\thread_mems.o: C:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.7.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_usart.h
 .\objects\thread_mems.o: .\Accelerometer\inc\LIS3DSH.h
+.\objects\thread_mems.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\objects\thread_mems.o: .\Headers\7seg_display.h

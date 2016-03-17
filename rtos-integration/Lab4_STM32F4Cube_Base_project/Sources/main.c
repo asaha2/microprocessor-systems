@@ -18,9 +18,13 @@ int fputc(int ch, FILE *f);
 extern int start_Thread_ADC(void);
 extern int start_Thread_DISP(void);
 extern int start_Thread_MEMS(void);
+extern int start_Thread_DISP2(void);
 
 osMutexDef(temp_mutex);
 osMutexId(temp_mutex_id);
+
+osMutexDef(mems_mutex);
+osMutexId(mems_mutex_id);
 
 /**
 	These lines are mandatory to make CMSIS-RTOS RTX work with te new Cube HAL
@@ -47,11 +51,14 @@ int main(void){
 	TIM3_Config();
 	
 	temp_mutex_id = osMutexCreate(osMutex(temp_mutex));
+	mems_mutex_id = osMutexCreate(osMutex(mems_mutex));
 	
 	start_Thread_ADC();	
-	start_Thread_DISP();
-	// start_Thread_MEMS();
-  
+	// start_Thread_DISP();
+	
+	start_Thread_MEMS();
+  start_Thread_DISP2();
+	
 	osKernelStart();
 }
 

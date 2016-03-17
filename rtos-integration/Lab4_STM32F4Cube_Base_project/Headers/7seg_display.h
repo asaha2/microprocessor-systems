@@ -7,3 +7,4 @@
 void Display(int number, int position);
 void Parse_Temp(double sample, int input[]);
 void Blink(void);
+void Parse_Mems(int* store, float sample);
