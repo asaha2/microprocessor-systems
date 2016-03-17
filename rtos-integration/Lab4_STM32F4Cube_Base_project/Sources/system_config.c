@@ -1,6 +1,7 @@
 #include "system_config.h"
 
 void SystemClock_Config(void){
+	
   RCC_OscInitTypeDef RCC_OscInitStruct;
   RCC_ClkInitTypeDef RCC_ClkInitStruct;
 
@@ -77,13 +78,11 @@ void ADC_Config(void){
 void GPIO_Config(void){
 	
 	GPIO_InitTypeDef GPIOA_Init;						
-	GPIO_InitTypeDef GPIOE_Init;						
-	GPIO_InitTypeDef GPIOD_Init;
+	GPIO_InitTypeDef GPIOE_Init;
 	
 	/* Configure the GPIO peripheral clock */
 	__HAL_RCC_GPIOA_CLK_ENABLE();
-	__HAL_RCC_GPIOE_CLK_ENABLE();	
-	__HAL_RCC_GPIOD_CLK_ENABLE();
+	__HAL_RCC_GPIOE_CLK_ENABLE();
 	
 	/* Initializes GPIO PORTS(A, E & D) and specifies pin characteristics */
 	GPIOA_Init.Mode = GPIO_MODE_OUTPUT_PP;
@@ -97,11 +96,5 @@ void GPIO_Config(void){
 	GPIOE_Init.Pull = GPIO_NOPULL;
 	GPIOE_Init.Speed = GPIO_SPEED_FREQ_VERY_HIGH;			
 	HAL_GPIO_Init(GPIOE, &GPIOE_Init);
-	
-	GPIOD_Init.Mode = GPIO_MODE_OUTPUT_PP;
-	GPIOD_Init.Pin = GPIO_PIN_12 | GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15;
-	GPIOD_Init.Pull = GPIO_NOPULL;
-	GPIOD_Init.Speed = GPIO_SPEED_FREQ_VERY_HIGH;	
-	HAL_GPIO_Init(GPIOD, &GPIOD_Init);
 }	
 
