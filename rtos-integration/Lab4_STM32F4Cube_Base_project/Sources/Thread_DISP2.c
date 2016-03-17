@@ -5,13 +5,14 @@
 void Thread_DISP2(void const *argument);
 osThreadId tid_Thread_DISP2;
 osThreadDef(Thread_DISP2, osPriorityNormal, 1, 0);
-void Show(void);
-void Show_Negative(void);
 
 extern float pitch, roll;
 extern osMutexId mems_mutex_id;
 extern int interrupt2, interrupt3;
 extern double output;
+
+void Show(void);
+void Show_Negative(void);
 
 int displaying[] = {0, 0, 0, 0, 0};
 int parsed[] = {0, 0, 0, 0, 0};
@@ -90,22 +91,22 @@ void Show(void){
 	
 	if(interrupt2 < 2){
 		if(displaying[3] != 0){
-			if(output > 32 && interrupt3 > 800) Blink();
+			if(output > 32 && interrupt3 > 600) Blink();
 			else Display(displaying[3], 4);
 		}
 		else{
-			if(output > 32 && interrupt3 > 800) Blink();
+			if(output > 32 && interrupt3 > 600) Blink();
 			else Display(displaying[2], 4);
 		}
 	}
 	
 	else if(interrupt2 < 4){
 		if(displaying[3] != 0){
-			if(output > 32 && interrupt3 > 800) Blink();
+			if(output > 32 && interrupt3 > 600) Blink();
 			else Display(displaying[2], 3);
 		}
 		else{
-			if(output > 32 && interrupt3 > 800) Blink();
+			if(output > 32 && interrupt3 > 600) Blink();
 			else Display(displaying[1], 4);
 		}
 	}
@@ -113,29 +114,29 @@ void Show(void){
 	else if(interrupt2 < 6){
 		if(displaying[3] != 0){
 			if(displaying[1] != 0){
-				if(output > 32 && interrupt3 > 800) Blink();
+				if(output > 32 && interrupt3 > 600) Blink();
 				else Display(displaying[1], 3);
 			}
 		}
 		else{
-			if(output > 32 && interrupt3 > 800) Blink();
+			if(output > 32 && interrupt3 > 600) Blink();
 			else Display(displaying[0], 3);
 		}
 	}
 	
 	else if (interrupt2 < 8){	
 		if(displaying[3] != 0){		
-			if(output > 32 && interrupt3 > 800) Blink();
+			if(output > 32 && interrupt3 > 600) Blink();
 			else Display(displaying[0], 1);					
 		}
 		else{
-			if(output > 32 && interrupt3 > 800) Blink();
+			if(output > 32 && interrupt3 > 600) Blink();
 			else Display(displaying[4], 1);
 		}
 	}
 	
 	else{
-		if(output > 32 && interrupt3 > 800) Blink();
+		if(output > 32 && interrupt3 > 600) Blink();
 		else Display(11, 0);
 	}
 
