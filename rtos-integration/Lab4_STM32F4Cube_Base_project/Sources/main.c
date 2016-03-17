@@ -17,6 +17,7 @@
 int fputc(int ch, FILE *f);
 extern int start_Thread_ADC(void);
 extern int start_Thread_DISP(void);
+extern int start_Thread_MEMS(void);
 
 osMutexDef(temp_mutex);
 osMutexId(temp_mutex_id);
@@ -41,11 +42,15 @@ int main(void){
   SystemClock_Config();
 	ADC_Config();
 	GPIO_Config();
+	MEMS_Config();
+	MEMS_Config_IT();
+	TIM3_Config();
 	
 	temp_mutex_id = osMutexCreate(osMutex(temp_mutex));
 	
 	start_Thread_ADC();	
 	start_Thread_DISP();
+	// start_Thread_MEMS();
   
 	osKernelStart();
 }

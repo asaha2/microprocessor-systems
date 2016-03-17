@@ -3,8 +3,8 @@
 .\objects\thread_mems.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\thread_mems.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
 .\objects\thread_mems.o: C:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.7.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
-.\objects\thread_mems.o: C:\Users\Aditya\Documents\GitHub\microprocessor-systems\rtos-integration\Lab4_STM32F4Cube_Base_project\RTE\Device\STM32F407VGTx\stm32f4xx_hal_conf.h
-.\objects\thread_mems.o: C:\Users\Aditya\Documents\GitHub\microprocessor-systems\rtos-integration\Lab4_STM32F4Cube_Base_project\RTE\RTE_Components.h
+.\objects\thread_mems.o: C:\Users\asaha2\Downloads\Github\microprocessor-systems\rtos-integration\Lab4_STM32F4Cube_Base_project\RTE\Device\STM32F407VGTx\stm32f4xx_hal_conf.h
+.\objects\thread_mems.o: C:\Users\asaha2\Downloads\Github\microprocessor-systems\rtos-integration\Lab4_STM32F4Cube_Base_project\RTE\RTE_Components.h
 .\objects\thread_mems.o: C:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.7.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc.h
 .\objects\thread_mems.o: C:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.7.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_def.h
 .\objects\thread_mems.o: C:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
@@ -36,3 +36,4 @@
 .\objects\thread_mems.o: C:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.7.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_ex.h
 .\objects\thread_mems.o: C:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.7.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_uart.h
 .\objects\thread_mems.o: C:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.7.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_usart.h
+.\objects\thread_mems.o: .\Accelerometer\inc\LIS3DSH.h

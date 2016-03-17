@@ -86,7 +86,7 @@ void GPIO_Config(void){
 	
 	/* Initializes GPIO PORTS(A, E & D) and specifies pin characteristics */
 	GPIOA_Init.Mode = GPIO_MODE_OUTPUT_PP;
-	GPIOA_Init.Pin = GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3;
+	GPIOA_Init.Pin = GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_8;
 	GPIOA_Init.Pull = GPIO_NOPULL;
 	GPIOA_Init.Speed = GPIO_SPEED_FREQ_VERY_HIGH;	
 	HAL_GPIO_Init(GPIOA, &GPIOA_Init);
@@ -102,7 +102,6 @@ void MEMS_Config(void){
 
 	LIS3DSH_InitTypeDef LIS3DSH_InitStruct;
 
-	/* Initialize all configured peripherals */
 	LIS3DSH_InitStruct.AA_Filter_BW = LIS3DSH_AA_BW_50;
 	LIS3DSH_InitStruct.Axes_Enable = LIS3DSH_XYZ_ENABLE;
 	LIS3DSH_InitStruct.Continous_Update = LIS3DSH_ContinousUpdate_Disabled;
@@ -136,7 +135,6 @@ void MEMS_Config_IT(void){
 void TIM3_Config(void){
 	
 	TIM_Base_InitTypeDef TIM_Base_InitStruct;
-	TIM_HandleTypeDef TIM_HandleStruct;
 
 	__HAL_RCC_TIM3_CLK_ENABLE();	
 	TIM_Base_InitStruct.Prescaler = 1000;
@@ -148,8 +146,8 @@ void TIM3_Config(void){
 	TIM_HandleStruct.Init = TIM_Base_InitStruct;
 	TIM_HandleStruct.Instance = TIM3;
 	TIM_HandleStruct.Channel = HAL_TIM_ACTIVE_CHANNEL_1;
-	if(HAL_TIM_Base_Init(&TIM_HandleStruct) != HAL_OK)printf("Error initializing TIM handle\n");
-	if(HAL_TIM_Base_Start_IT(&TIM_HandleStruct) != HAL_OK)printf("Error initializing TIM interrupt mode\n");
+	if(HAL_TIM_Base_Init(&TIM_HandleStruct) != HAL_OK) printf("Error initializing TIM handle\n");
+	if(HAL_TIM_Base_Start_IT(&TIM_HandleStruct) != HAL_OK) printf("Error initializing TIM interrupt mode\n");
 	
 	HAL_NVIC_EnableIRQ(TIM3_IRQn);
 	HAL_NVIC_SetPriority(TIM3_IRQn, 0, 1);
