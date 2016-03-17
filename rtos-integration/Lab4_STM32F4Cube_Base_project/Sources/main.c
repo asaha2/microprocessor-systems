@@ -14,20 +14,9 @@
 #include <stdio.h>
 #include "system_config.h"
 
-/* extern void initializeLED_IO			(void);
-extern void start_Thread_LED			(void);
-extern void Thread_LED(void const *argument);
-extern osThreadId tid_Thread_LED; */
-
-void TextOut(const char *str);
 int fputc(int ch, FILE *f);
-
 extern int start_Thread_ADC(void);
-// extern void Thread_ADC(void const *argument);
-// extern ADC_HandleTypeDef ADC1_Handle;
-
 extern int start_Thread_DISP(void);
-// extern void Thread_DISP(void const *argument);
 
 osMutexDef(temp_mutex);
 osMutexId(temp_mutex_id);
@@ -44,9 +33,6 @@ uint32_t HAL_GetTick(void){
 }
 #endif
 
-/**
-  * Main function
-  */
 int main(void){
 
   osKernelInitialize();
@@ -57,23 +43,11 @@ int main(void){
 	GPIO_Config();
 	
 	temp_mutex_id = osMutexCreate(osMutex(temp_mutex));
-
-	/* User codes goes here*/
-  // initializeLED_IO();                       /* Initialize LED GPIO Buttons    */
-  // start_Thread_LED();                       /* Create LED thread              */
 	
 	start_Thread_ADC();	
 	start_Thread_DISP();
-	/* User codes ends here*/
   
 	osKernelStart();
-}
-
-void TextOut(const char *str){
-  do{
-    if(*str=='\n') ITM_SendChar('\r');
-    ITM_SendChar(*str);
-  } while(*str++);
 }
 
 int fputc(int ch, FILE *f){

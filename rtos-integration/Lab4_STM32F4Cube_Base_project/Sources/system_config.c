@@ -98,3 +98,60 @@ void GPIO_Config(void){
 	HAL_GPIO_Init(GPIOE, &GPIOE_Init);
 }	
 
+void MEMS_Config(void){
+
+	LIS3DSH_InitTypeDef LIS3DSH_InitStruct;
+
+	/* Initialize all configured peripherals */
+	LIS3DSH_InitStruct.AA_Filter_BW = LIS3DSH_AA_BW_50;
+	LIS3DSH_InitStruct.Axes_Enable = LIS3DSH_XYZ_ENABLE;
+	LIS3DSH_InitStruct.Continous_Update = LIS3DSH_ContinousUpdate_Disabled;
+	LIS3DSH_InitStruct.Full_Scale = LIS3DSH_FULLSCALE_2;
+	LIS3DSH_InitStruct.Power_Mode_Output_DataRate = LIS3DSH_DATARATE_100;
+	LIS3DSH_InitStruct.Self_Test = LIS3DSH_SELFTEST_NORMAL;
+	LIS3DSH_Init(&LIS3DSH_InitStruct);
+}
+
+void MEMS_Config_IT(void){
+
+	LIS3DSH_DRYInterruptConfigTypeDef LIS3DSH_InterruptConfigStruct;
+	GPIO_InitTypeDef GPIOE_Init;
+
+	LIS3DSH_InterruptConfigStruct.Dataready_Interrupt = LIS3DSH_DATA_READY_INTERRUPT_ENABLED;
+	LIS3DSH_InterruptConfigStruct.Interrupt_signal = LIS3DSH_ACTIVE_HIGH_INTERRUPT_SIGNAL;
+	LIS3DSH_InterruptConfigStruct.Interrupt_type = LIS3DSH_INTERRUPT_REQUEST_PULSED;
+	LIS3DSH_DataReadyInterruptConfig(&LIS3DSH_InterruptConfigStruct);
+	
+	__HAL_RCC_GPIOE_CLK_ENABLE();	
+	GPIOE_Init.Mode = GPIO_MODE_IT_RISING;
+	GPIOE_Init.Pin = GPIO_PIN_0;
+	GPIOE_Init.Pull = GPIO_NOPULL;
+	GPIOE_Init.Speed = GPIO_SPEED_FREQ_HIGH;				
+	HAL_GPIO_Init(GPIOE, &GPIOE_Init);
+	
+	HAL_NVIC_EnableIRQ(EXTI0_IRQn);
+	HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
+}
+
+void TIM3_Config(void){
+	
+	TIM_Base_InitTypeDef TIM_Base_InitStruct;
+	TIM_HandleTypeDef TIM_HandleStruct;
+
+	__HAL_RCC_TIM3_CLK_ENABLE();	
+	TIM_Base_InitStruct.Prescaler = 1000;
+	TIM_Base_InitStruct.CounterMode = TIM_COUNTERMODE_UP;
+	TIM_Base_InitStruct.Period = 84;
+	TIM_Base_InitStruct.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+	TIM_Base_InitStruct.RepetitionCounter = 0;
+	
+	TIM_HandleStruct.Init = TIM_Base_InitStruct;
+	TIM_HandleStruct.Instance = TIM3;
+	TIM_HandleStruct.Channel = HAL_TIM_ACTIVE_CHANNEL_1;
+	if(HAL_TIM_Base_Init(&TIM_HandleStruct) != HAL_OK)printf("Error initializing TIM handle\n");
+	if(HAL_TIM_Base_Start_IT(&TIM_HandleStruct) != HAL_OK)printf("Error initializing TIM interrupt mode\n");
+	
+	HAL_NVIC_EnableIRQ(TIM3_IRQn);
+	HAL_NVIC_SetPriority(TIM3_IRQn, 0, 1);
+}
+

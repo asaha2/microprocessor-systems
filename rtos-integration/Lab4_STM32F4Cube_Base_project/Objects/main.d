@@ -38,3 +38,4 @@
 .\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
 .\objects\main.o: .\Headers\system_config.h
 .\objects\main.o: .\Headers\supporting_functions.h
+.\objects\main.o: .\Accelerometer\inc\LIS3DSH.h

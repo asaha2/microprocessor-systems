@@ -3,7 +3,6 @@
 #include "kalman_filter.h"
 
 void Thread_ADC (void const *argument);
-extern void TextOut(const char *str);
 osThreadId tid_Thread_ADC;
 osThreadDef(Thread_ADC, osPriorityNormal, 1, 0);
 

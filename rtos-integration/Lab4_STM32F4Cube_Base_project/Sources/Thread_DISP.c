@@ -3,7 +3,6 @@
 #include "7seg_display.h"
 
 void Thread_DISP (void const *argument);
-extern void TextOut(const char *str);
 osThreadId tid_Thread_DISP;
 osThreadDef(Thread_DISP, osPriorityNormal, 1, 0);
 
@@ -25,6 +24,7 @@ void Thread_DISP(void const *argument){
 	int counter = 1;
 	int counter2 = 0;
 	while(1){
+		// osDelay(1000);
 		osMutexWait(temp_mutex_id, osWaitForever);
 		temp2 = output;
 		osMutexRelease(temp_mutex_id);
