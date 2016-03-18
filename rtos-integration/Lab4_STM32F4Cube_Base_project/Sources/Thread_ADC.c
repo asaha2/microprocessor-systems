@@ -10,6 +10,7 @@ kalman_state kstate;
 ADC_HandleTypeDef ADC1_Handle;
 
 extern osMutexId temp_mutex_id;
+extern int interrupt6;
 double output;
 
 int start_Thread_ADC(void){
@@ -28,17 +29,20 @@ void Thread_ADC(void const *argument){
 	Reset(&kstate);
 	while(1){
 		osDelay(1000);
-		HAL_ADC_Start(&ADC1_Handle);
-		if(HAL_ADC_PollForConversion(&ADC1_Handle, 1000000) == HAL_OK){
-			temp = HAL_ADC_GetValue(&ADC1_Handle);
-			// printf("adc: temp= %f\n", temp);
-			osMutexWait(temp_mutex_id, osWaitForever);
-			output = (temp * 3000) / 4096;
-			output = ((output - 760) / 2.5) + 25;
-			osMutexRelease(temp_mutex_id);
-			// printf("adc: output= %f\n", output);
+		if(interrupt6 != 0){
+			interrupt6 = 0;
+			HAL_ADC_Start(&ADC1_Handle);
+			if(HAL_ADC_PollForConversion(&ADC1_Handle, 1000000) == HAL_OK){
+				temp = HAL_ADC_GetValue(&ADC1_Handle);
+				// printf("adc: temp= %f\n", temp);
+				osMutexWait(temp_mutex_id, osWaitForever);
+				output = (temp * 3000) / 4096;
+				output = ((output - 760) / 2.5) + 25;
+				osMutexRelease(temp_mutex_id);
+				// printf("adc: output= %f\n", output);
+			}
+			else printf("Poll for conversion not working!\n");
 		}
-		else printf("Poll for conversion not working!\n");
 	}
 }
 

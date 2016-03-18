@@ -40,6 +40,12 @@ void Thread_MEMS(void const *argument){
 			roll  = (atan2(-read_acc[1], read_acc[2]) * 180.0) / 3.1416;
 			osMutexRelease(mems_mutex_id);
 			// printf("mems: roll= %f\n", roll);
+			
+			osMutexWait(mems_mutex_id, osWaitForever);	
+			// pitch = (atan2(fXg, sqrt(fYg*fYg + fZg*fZg))*180.0)/M_PI;			
+			pitch = (atan2(read_acc[0], sqrt(read_acc[1] * read_acc[1] + read_acc[2] * read_acc[2]))*180.0) / 3.1416;
+			osMutexRelease(mems_mutex_id);
+			// printf("mems: roll= %f\n", pitch);
 		}
 	}
 }

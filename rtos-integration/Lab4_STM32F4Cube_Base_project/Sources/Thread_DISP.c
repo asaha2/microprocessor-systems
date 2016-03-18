@@ -14,7 +14,9 @@ extern double output;
 extern float pitch, roll;
 int displaying[] = {0, 0, 0, 0, 0};
 int parsed[] = {0, 0, 0, 0, 0};
-int mode = 1; /* mode0 = ADC, mode1 = MEMS*/
+
+int mode = 1; /* mode{0} = ADC, mode{1} = MEMS*/
+int mode1 = 1; /* mode1{0} = roll, mode1{1} = pitch*/
 
 void Show(void);
 void Show_Negative(void);
@@ -40,7 +42,7 @@ void Thread_DISP(void const *argument){
 			osMutexWait(temp_mutex_id, osWaitForever);
 			temp2 = output;
 			osMutexRelease(temp_mutex_id);
-			// printf("disp: temp2= %f\n", temp2);		
+			printf("disp: temp2= %f\n", temp2);		
 			Parse_Temp(temp2, disp);
 			// printf("%d %d %d %d\n", disp[3], disp[2], disp[1], disp[0]);
 			
@@ -84,25 +86,52 @@ void Thread_DISP(void const *argument){
 		
 		else{
 		
-			// osDelay(10);
-			osMutexWait(mems_mutex_id, osWaitForever);
-			roll_temp = roll;
-			osMutexRelease(mems_mutex_id);
-			// printf("mems: roll= %f\n", roll_temp);
-			printf("mems: temp= %f\n", output);
-					
-			if(roll_temp < 100){
-				Parse_Mems(parsed, roll_temp);								
-				// printf("disp2: %d %d %d %d %d\n", parsed[3], parsed[2], parsed[1], parsed[0], parsed[4]);
+			if(mode1 == 0){
+				
+				// osDelay(10);
+				osMutexWait(mems_mutex_id, osWaitForever);
+				roll_temp = roll;
+				osMutexRelease(mems_mutex_id);
+				// printf("mems: roll= %f\n", roll_temp);
+				// printf("mems: temp= %f\n", output);
+						
+				if(roll_temp < 100){
+					Parse_Mems(parsed, roll_temp);								
+					// printf("disp2: %d %d %d %d %d\n", parsed[3], parsed[2], parsed[1], parsed[0], parsed[4]);
+				}
+				
+				else{
+					parsed[0] = (int) roll_temp % 10;
+					parsed[2] = ((int) roll_temp / 10) % 10;
+					parsed[3] = ((int) roll_temp / 100) % 10;
+					parsed[1] = 0;
+					parsed[4] = 0;				
+					// printf("disp2: %d %d %d %d %d\n", parsed[3], parsed[2], parsed[1], parsed[0], parsed[4]);
+				}
 			}
 			
 			else{
-				parsed[0] = (int) roll_temp % 10;
-				parsed[2] = ((int) roll_temp / 10) % 10;
-				parsed[3] = ((int) roll_temp / 100) % 10;
-				parsed[1] = 0;
-				parsed[4] = 0;				
-				// printf("disp2: %d %d %d %d %d\n", parsed[3], parsed[2], parsed[1], parsed[0], parsed[4]);
+			
+				// osDelay(10);
+				osMutexWait(mems_mutex_id, osWaitForever);
+				pitch_temp = pitch;
+				osMutexRelease(mems_mutex_id);
+				// printf("mems: roll= %f\n", pitch_temp);
+				// printf("mems: temp= %f\n", output);
+				
+				if(pitch_temp < 100){
+					Parse_Mems(parsed, pitch_temp);								
+					// printf("disp2: %d %d %d %d %d\n", parsed[3], parsed[2], parsed[1], parsed[0], parsed[4]);
+				}
+				
+				else{
+					parsed[0] = (int) pitch_temp % 10;
+					parsed[2] = ((int) pitch_temp / 10) % 10;
+					parsed[3] = ((int) pitch_temp / 100) % 10;
+					parsed[1] = 0;
+					parsed[4] = 0;				
+					// printf("disp2: %d %d %d %d %d\n", parsed[3], parsed[2], parsed[1], parsed[0], parsed[4]);
+				}
 			}
 			
 			if(parsed[4] < 0 || parsed[3] < 0 || parsed[2] < 0 || parsed[1] < 0 || parsed[0] < 0) Show_Negative();

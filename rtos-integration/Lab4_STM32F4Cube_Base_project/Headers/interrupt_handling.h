@@ -6,7 +6,10 @@ int interrupt2 = 0;
 int interrupt3 = 0;
 int interrupt4 = 0;
 int interrupt5 = 0;
+int interrupt6 = 0;
+
 int count = 0;
+int count2 = 0;
 
 extern TIM_HandleTypeDef TIM_HandleStruct;
 
