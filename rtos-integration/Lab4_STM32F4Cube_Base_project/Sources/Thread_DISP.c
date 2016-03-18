@@ -73,7 +73,7 @@ void Thread_DISP(void const *argument){
 			osMutexWait(temp_mutex_id, osWaitForever);
 			temp2 = output;
 			osMutexRelease(temp_mutex_id);
-			printf("disp: temp2= %f\n", temp2);		
+			// printf("disp: temp2= %f\n", temp2);		
 			Parse_Temp(temp2, disp);
 			// printf("%d %d %d %d\n", disp[3], disp[2], disp[1], disp[0]);
 			
@@ -96,6 +96,11 @@ void Thread_DISP(void const *argument){
 				else Display(temp3[0], 1);
 			}
 			
+			else if(interrupt4 <= 8){
+				if(temp3[3] == 5 && temp3[2] > 0 && interrupt5 > 600) Blink();
+				else Display(11, 0);
+			}
+			
 			else{
 				if(temp3[3] == 5 && temp3[2] > 0 && interrupt5 > 600) Blink();
 				else Display(temp3[1], 2);
@@ -110,7 +115,7 @@ void Thread_DISP(void const *argument){
 			}
 			
 			/* Reset loop counter after 4 cycles */
-			if(interrupt4 > 8){
+			if(interrupt4 > 10){
 				interrupt4 = 0;
 			}
 		}
