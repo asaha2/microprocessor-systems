@@ -61,7 +61,7 @@ void Thread_ADC(void const *argument){
 				if(!Kalmanfilter_C(temp, &output_adc, &kstate_adc)){
 					// printf("adc: temp= %f output_adc- %f\n", temp, output_adc);
 					osMutexWait(temp_mutex_id, osWaitForever);
-					output = (temp * 3000) / 4096;
+					output = (output_adc * 3000) / 4096;
 					output = ((output - 760) / 2.5) + 25;
 					osMutexRelease(temp_mutex_id);
 					// printf("adc: output= %f\n", output);
