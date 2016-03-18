@@ -95,7 +95,7 @@ void Thread_DISP(void const *argument){
 		
 		if(mode == 0){
 		
-			// osDelay(10);
+			// osDelay(2);
 			osMutexWait(temp_mutex_id, osWaitForever);
 			temp2 = output;
 			osMutexRelease(temp_mutex_id);
@@ -108,27 +108,27 @@ void Thread_DISP(void const *argument){
 			}
 			
 			if(interrupt4 <= 2){
-				if(temp3[3] == 5 && temp3[2] > 0 && interrupt5 > 600) Blink();
+				if(temp3[3] == 4 && temp3[2] > 0 && interrupt5 > 600) Blink();
 				else Display(temp3[3], 4);
 			}
 			
 			else if(interrupt4 <= 4){
-				if(temp3[3] == 5 && temp3[2] > 0 && interrupt5 > 600) Blink();
+				if(temp3[3] == 4 && temp3[2] > 0 && interrupt5 > 600) Blink();
 				else Display(temp3[2], 3);
 			}
 			
 			else if(interrupt4 <= 6){
-				if(temp3[3] == 5 && temp3[2] > 0 && interrupt5 > 600) Blink();
+				if(temp3[3] == 4 && temp3[2] > 0 && interrupt5 > 600) Blink();
 				else Display(temp3[0], 1);
 			}
 			
 			else if(interrupt4 <= 8){
-				if(temp3[3] == 5 && temp3[2] > 0 && interrupt5 > 600) Blink();
+				if(temp3[3] == 4 && temp3[2] > 0 && interrupt5 > 600) Blink();
 				else Display(11, 0);
 			}
 			
 			else{
-				if(temp3[3] == 5 && temp3[2] > 0 && interrupt5 > 600) Blink();
+				if(temp3[3] == 4 && temp3[2] > 0 && interrupt5 > 600) Blink();
 				else Display(temp3[1], 2);
 			}
 
@@ -150,7 +150,7 @@ void Thread_DISP(void const *argument){
 		
 			if(mode1 == 0){
 				
-				// osDelay(10);
+				// osDelay(2);
 				osMutexWait(mems_mutex_id, osWaitForever);
 				roll_temp = roll;
 				osMutexRelease(mems_mutex_id);
@@ -174,7 +174,7 @@ void Thread_DISP(void const *argument){
 			
 			else{
 			
-				// osDelay(10);
+				// osDelay(2);
 				osMutexWait(mems_mutex_id, osWaitForever);
 				pitch_temp = pitch;
 				osMutexRelease(mems_mutex_id);
@@ -210,17 +210,17 @@ void Thread_DISP(void const *argument){
 void Show_Negative(void){
 
 	if(interrupt2 < 3){
-		if(output > 32 && interrupt2 > 1);
+		if(output > 40 && interrupt2 > 1);
 		else Display(12, 4);
 	}
 	
 	else if(interrupt2 < 6){
-		if(output > 32 && interrupt2 > 4);
+		if(output > 40 && interrupt2 > 4);
 		else Display(12, 3);
 	}
 	
 	else{
-		if(output > 32 && interrupt2 > 7);
+		if(output > 40 && interrupt2 > 7);
 		else Display(12, 1);
 	}
 	
@@ -248,22 +248,22 @@ void Show(void){
 	
 	if(interrupt2 < 2){
 		if(displaying[3] != 0){
-			if(output > 50 && interrupt3 > 600) Blink();
+			if(output > 40 && interrupt3 > 600) Blink();
 			else Display(displaying[3], 4);
 		}
 		else{
-			if(output > 50 && interrupt3 > 600) Blink();
+			if(output > 40 && interrupt3 > 600) Blink();
 			else Display(displaying[2], 4);
 		}
 	}
 	
 	else if(interrupt2 < 4){
 		if(displaying[3] != 0){
-			if(output > 50 && interrupt3 > 600) Blink();
+			if(output > 40 && interrupt3 > 600) Blink();
 			else Display(displaying[2], 3);
 		}
 		else{
-			if(output > 50 && interrupt3 > 600) Blink();
+			if(output > 40 && interrupt3 > 600) Blink();
 			else Display(displaying[1], 4);
 		}
 	}
@@ -271,29 +271,29 @@ void Show(void){
 	else if(interrupt2 < 6){
 		if(displaying[3] != 0){
 			if(displaying[1] != 0){
-				if(output > 50 && interrupt3 > 600) Blink();
+				if(output > 40 && interrupt3 > 600) Blink();
 				else Display(displaying[1], 3);
 			}
 		}
 		else{
-			if(output > 50 && interrupt3 > 600) Blink();
+			if(output > 40 && interrupt3 > 600) Blink();
 			else Display(displaying[0], 3);
 		}
 	}
 	
 	else if (interrupt2 < 8){	
 		if(displaying[3] != 0){		
-			if(output > 50 && interrupt3 > 600) Blink();
+			if(output > 40 && interrupt3 > 600) Blink();
 			else Display(displaying[0], 1);					
 		}
 		else{
-			if(output > 50 && interrupt3 > 600) Blink();
+			if(output > 40 && interrupt3 > 600) Blink();
 			else Display(displaying[4], 1);
 		}
 	}
 	
 	else{
-		if(output > 50 && interrupt3 > 600) Blink();
+		if(output > 40 && interrupt3 > 600) Blink();
 		else Display(11, 0);
 	}
 

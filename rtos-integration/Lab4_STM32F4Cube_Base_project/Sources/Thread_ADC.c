@@ -52,7 +52,7 @@ void Thread_ADC(void const *argument){
 	double temp, output_adc;
 	Reset_ADC(&kstate_adc);
 	while(1){
-		osDelay(1000);
+		osDelay(200);
 		if(interrupt6 != 0){
 			interrupt6 = 0;
 			HAL_ADC_Start(&ADC1_Handle);

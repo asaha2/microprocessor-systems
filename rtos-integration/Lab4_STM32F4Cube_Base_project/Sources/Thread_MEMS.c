@@ -58,7 +58,7 @@ void Thread_MEMS(void const *argument){
 	// double den_pitch, den_roll;
 	
 	while(1){
-		osDelay(1000);
+		osDelay(200);
 		// printf("mems: works\n\r");
 		// printf("mems: interrupt = %d\n\r", interrupt);
 		if(interrupt != 0){
