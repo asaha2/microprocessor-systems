@@ -25,6 +25,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 	interrupt3++;
 	interrupt4++;
 	interrupt5++;
+	interrupt7++;
 	
 	if(count2 > 40){
 		interrupt6++;
