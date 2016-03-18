@@ -1,4 +1,14 @@
-
+/**
+  ******************************************************************************
+  * File Name          : kalman_filter.h
+  * Description        : User implementation of Kalman filter for noise processing
+	* Author						 : Aditya Saha & Habib Ahmed
+	* Version            : 1.0.0
+	* Date							 : March 18th, 2016
+  ******************************************************************************
+  */
+	
+/* Includes */
 #include "kalman_filter.h"
 
 /**

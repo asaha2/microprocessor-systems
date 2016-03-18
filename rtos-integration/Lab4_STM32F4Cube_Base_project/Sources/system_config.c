@@ -1,5 +1,21 @@
+/**
+  ******************************************************************************
+  * File Name          : system_config.c
+  * Description        : Configuration and implementation of system clocks and interrupt timers
+	* Author						 : Aditya Saha & Habib Ahmed
+	* Version            : 1.0.0
+	* Date							 : March 18th, 2016
+  ******************************************************************************
+  */
+
+/* Includes */
 #include "system_config.h"
 
+/**
+	 * @brief Configures the system clock
+	 * @param void
+   * @retval void
+   */
 void SystemClock_Config(void){
 	
   RCC_OscInitTypeDef RCC_OscInitStruct;
@@ -34,6 +50,11 @@ void SystemClock_Config(void){
   HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5);
 }
 
+/**
+	 * @brief Configures the on-chip temperature sensor and assosciated ADC channel
+	 * @param void
+   * @retval void
+   */
 void ADC_Config(void){
 	
 	ADC_InitTypeDef ADC1_Init;							
@@ -75,6 +96,12 @@ void ADC_Config(void){
 	}
 }
 
+/**
+	 * @brief This function configures the GPIO peripherals: it declares the necessary structures,   
+	 * sets up the GPIO peripheral clock, defines the pinout number and other pertinent configurations
+   * @param void
+   * @retval void
+   */	
 void GPIO_Config(void){
 	
 	GPIO_InitTypeDef GPIOA_Init;						
@@ -98,6 +125,11 @@ void GPIO_Config(void){
 	HAL_GPIO_Init(GPIOE, &GPIOE_Init);
 }	
 
+/**
+	 * @brief Configure and initialize the external MEMS accelerometer 
+	 * @param void
+   * @retval void
+   */
 void MEMS_Config(void){
 
 	LIS3DSH_InitTypeDef LIS3DSH_InitStruct;
@@ -111,6 +143,11 @@ void MEMS_Config(void){
 	LIS3DSH_Init(&LIS3DSH_InitStruct);
 }
 
+/**
+	 * @brief Enable interrupt mode on data arrival (Data Ready) for the MEMS sensor
+	 * @param void
+   * @retval void
+   */
 void MEMS_Config_IT(void){
 
 	LIS3DSH_DRYInterruptConfigTypeDef LIS3DSH_InterruptConfigStruct;
@@ -132,6 +169,11 @@ void MEMS_Config_IT(void){
 	HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
 }
 
+/**
+	 * @brief Configures the TIM3 peripheral timer for display countdown
+	 * @param void
+   * @retval void
+   */
 void TIM3_Config(void){
 	
 	TIM_Base_InitTypeDef TIM_Base_InitStruct;

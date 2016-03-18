@@ -1,9 +1,26 @@
-
+/**
+  ******************************************************************************
+  * File Name          : 7seg_display.c
+  * Description        : Configures and updates 7 segment display intervally
+	* Author						 : Aditya Saha & Habib Ahmed
+	* Version            : 1.0.0
+	* Date							 : March 18th, 2016
+  ******************************************************************************
+  */
+	
 /* Includes */
 #include "stdint.h"
 #include <stdio.h>
 #include "7seg_display.h"
 
+/**
+	 * @brief This function defines the GPIO pin write parameters to select which digit to display, 
+	 * and also defines the pin write parameters to display unit digit
+	 * @param number: Int value that specifies the unit digit to display (between 0 and 9)
+	 * @param position: Int value that selects the digit to display (between 4 and 1); from most 
+	 * to least significant digit respectively. NOTE- the 2nd digit specified is the decimal point
+   * @retval void
+   */
 void Display(int number, int position){
 	
 	/* Select GPIO pin for displaying 1st digit */
@@ -208,6 +225,12 @@ void Display(int number, int position){
 	}
 }
 
+/**
+	 * @brief Parse the input values (from temperature sensor) so as to 
+	 * extract the decimal and the whole digits (upto 2 decimal places)
+	 * @param void
+   * @retval void
+   */
 void Parse_Temp(double sample, int input[]){
 
 	// int* store;
@@ -227,6 +250,11 @@ void Parse_Temp(double sample, int input[]){
 	input[1] = 10;
 }
 
+/**
+	 * @brief When called resets the segments on the display to emulate blinking
+	 * @param void
+   * @retval void
+   */
 void Blink(void){
 
 	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4, GPIO_PIN_RESET);
@@ -244,6 +272,12 @@ void Blink(void){
 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, GPIO_PIN_RESET);
 }
 
+/**
+	 * @brief Parse the input values (from accelerometer) so as to extract the 
+	 * decimal and the whole digits (upto 2 decimal places)
+	 * @param void
+   * @retval void
+   */
 void Parse_Mems(int* store, float sample){
 
 	int sample2, i = 0;	

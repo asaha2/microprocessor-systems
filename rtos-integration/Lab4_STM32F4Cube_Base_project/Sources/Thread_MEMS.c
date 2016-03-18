@@ -1,19 +1,38 @@
+/**
+  ******************************************************************************
+  * File Name          : Thread_MEMS.c
+  * Description        : Worker thread source code for sampling accelerometer data
+	* Author						 : Aditya Saha & Habib Ahmed
+	* Version            : 1.0.0
+	* Date							 : March 18th, 2016
+  ******************************************************************************
+  */
+	
+/* Includes */
 #include "cmsis_os.h"
 #include "stm32f4xx_hal.h"
 #include "LIS3DSH.h"
 #include "math.h"
 #include "7seg_display.h"
 
+/* Thread function prototypes */
 void Thread_MEMS(void const *argument);
 osThreadId tid_Thread_MEMS;
 osThreadDef(Thread_MEMS, osPriorityNormal, 1, 0);
 
+/* Global declarations */
 TIM_HandleTypeDef TIM_HandleStruct;
 float pitch, roll;
 
+/* Extern declarations */
 extern int interrupt;
 extern osMutexId mems_mutex_id;
 
+/**
+	 * @brief Spawns the worker thread and checks for thread creation success
+	 * @param void
+   * @retval integer value showing status of the thread creation
+   */
 int start_Thread_MEMS(void){
 
   tid_Thread_MEMS = osThreadCreate(osThread(Thread_MEMS), NULL);
@@ -21,6 +40,12 @@ int start_Thread_MEMS(void){
   return(0);
 }
 
+/**
+	 * @brief Worker thread main superloop that defines how the thread will always display values 
+	 * depending on the relevant mode of operation
+	 * @param void*
+   * @retval void
+   */
 void Thread_MEMS(void const *argument){
 	
 	float read_acc[] = {0, 0, 0};

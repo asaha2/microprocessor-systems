@@ -1,27 +1,28 @@
 /*******************************************************************************
   * @file    main.c
-  * @author  Ashraf Suyyagh
+  * @author  Aditya Saha & Habib Ahmed (original template by Ashraf Suyyagh)
 	* @version V1.2.0
   * @date    17-January-2016
-  * @brief   This file demonstrates flasing one LED at an interval of one second
-	*          RTX based using CMSIS-RTOS 
+  * @brief   Main thread that spawns and configures other worker threads 
   ******************************************************************************
   */
 
+/* Includes */
 #include "stm32f4xx_hal.h"
 #include "cmsis_os.h"
 #include "RTE_Components.h"
 #include <stdio.h>
 #include "system_config.h"
 
+/* Function prototypes */
 int fputc(int ch, FILE *f);
 extern int start_Thread_ADC(void);
 extern int start_Thread_DISP(void);
 extern int start_Thread_MEMS(void);
 
+/* Mutex declarations */
 osMutexDef(temp_mutex);
 osMutexId(temp_mutex_id);
-
 osMutexDef(mems_mutex);
 osMutexId(mems_mutex_id);
 
@@ -37,6 +38,12 @@ uint32_t HAL_GetTick(void){
 }
 #endif
 
+/**
+	 * @brief Main thread that configures all peripherals and timers, initializes OS
+	 * configurations and spawns worker threads required for operation
+	 * @param void
+   * @retval integer value showing correct operation of main thread
+   */
 int main(void){
 
   osKernelInitialize();
@@ -53,13 +60,18 @@ int main(void){
 	mems_mutex_id = osMutexCreate(osMutex(mems_mutex));
 	
 	start_Thread_ADC();	
-	start_Thread_DISP();
-	
+	start_Thread_DISP();	
 	start_Thread_MEMS();
 	
 	osKernelStart();
 }
 
+/**
+	 * @brief Retarget fputc for printf application
+	 * @param ch- integer value of desired character to be displayed
+	 * @param f- file pointer, specifying stdout in this case
+   * @retval integer value of extracted character
+   */
 int fputc(int ch, FILE *f){
 	return ITM_SendChar(ch);
 }

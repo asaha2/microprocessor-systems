@@ -1,28 +1,48 @@
+/**
+  ******************************************************************************
+  * File Name          : Thread_DISP.c
+  * Description        : Worker thread source code for displaying on 7-segment
+	* Author						 : Aditya Saha & Habib Ahmed
+	* Version            : 1.0.0
+	* Date							 : March 18th, 2016
+  ******************************************************************************
+  */
+
+/* Includes */
 #include "cmsis_os.h"
 #include "stm32f4xx_hal.h"
 #include "7seg_display.h"
 #include "keypad.h"
 
+/* Thread function prototypes */
 void Thread_DISP(void const *argument);
 osThreadId tid_Thread_DISP;
 osThreadDef(Thread_DISP, osPriorityNormal, 1, 0);
 
+/* Extern declarations */
 extern osMutexId temp_mutex_id;
 extern osMutexId mems_mutex_id;
 extern int interrupt4, interrupt5;
 extern int interrupt2, interrupt3;
 extern double output;
 extern float pitch, roll;
-int displaying[] = {0, 0, 0, 0, 0};
-int parsed[] = {0, 0, 0, 0, 0};
 extern int interrupt7;
 
+/* Global declarations */
+int displaying[] = {0, 0, 0, 0, 0};
+int parsed[] = {0, 0, 0, 0, 0};
 int mode = 1; /* mode{0} = ADC, mode{1} = MEMS */
 int mode1 = 1; /* mode1{0} = roll, mode1{1} = pitch */
 
+/* Function prototypes */
 void Show(void);
 void Show_Negative(void);
 
+/**
+	 * @brief Spawns the worker thread and checks for thread creation success
+	 * @param void
+   * @retval integer value showing status of the thread creation
+   */
 int start_Thread_DISP(void){
 
   tid_Thread_DISP = osThreadCreate(osThread(Thread_DISP), NULL);
@@ -30,6 +50,12 @@ int start_Thread_DISP(void){
   return(0);
 }
 
+/**
+	 * @brief Worker thread main superloop that defines how the thread will always display values 
+	 * depending on the relevant mode of operation
+	 * @param void*
+   * @retval void
+   */
 void Thread_DISP(void const *argument){
 	
 	double temp2;
@@ -176,6 +202,11 @@ void Thread_DISP(void const *argument){
 	}
 }
 	
+/**
+	 * @brief Displays a unique combination of segments to signify negative valued inputs
+	 * @param void
+   * @retval void
+   */
 void Show_Negative(void){
 
 	if(interrupt2 < 3){
@@ -198,6 +229,11 @@ void Show_Negative(void){
 	}
 }
 
+/**
+	 * @brief Display the parsed values on the 7-segment display
+	 * @param void
+   * @retval void
+   */
 void Show(void){
 		
 	// printf("%d %d %d %d\n", displaying[3], displaying[2], displaying[1], displaying[0]);
