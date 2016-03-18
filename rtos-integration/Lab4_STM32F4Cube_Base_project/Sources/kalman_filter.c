@@ -44,12 +44,27 @@ int Kalmanfilter_C(double InputArray, double* OutputArray, kalman_state* kstate)
 	 * @param kinit*: Pointer to a kalman_state structure
    * @retval void
    */
-void Reset(kalman_state* kinit){
+void Reset_ADC(kalman_state* kinit){
 
 	kinit->q = 0.014;
 	kinit->r = 0.550;
 	kinit->x = 0;
 	kinit->p = 0.081;
+	kinit->k = 0;
+}
+
+/**
+	 * @brief This function initializes the Kalman filter struct parameters. The initial values are
+	 * decided following rigorous experiments that give the best result for our pertinent sensor
+	 * @param kinit*: Pointer to a kalman_state structure
+   * @retval void
+   */
+void Reset_MEMS(kalman_state* kinit){
+
+	kinit->q = 0.1;
+	kinit->r = 0.1;
+	kinit->x = 0;
+	kinit->p = 0.1;
 	kinit->k = 0;
 }
 

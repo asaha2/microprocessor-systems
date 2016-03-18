@@ -18,5 +18,6 @@ typedef struct kalman_struct{
 }kalman_state;
 
 /* Function prototypes */
-void Reset(kalman_state* kinit);
+void Reset_ADC(kalman_state* kinit);
+void Reset_MEMS(kalman_state* kinit);
 int Kalmanfilter_C(double InputArray, double* OutputArray, kalman_state* kstate);

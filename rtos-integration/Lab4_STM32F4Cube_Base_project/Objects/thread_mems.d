@@ -39,3 +39,4 @@
 .\objects\thread_mems.o: .\Accelerometer\inc\LIS3DSH.h
 .\objects\thread_mems.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\objects\thread_mems.o: .\Headers\7seg_display.h
+.\objects\thread_mems.o: .\Headers\kalman_filter.h
